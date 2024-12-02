@@ -1,7 +1,11 @@
 # React Setup run
 cd student-portal
+
 npm install
+
 npm run dev
+
+
 
 # React + Vite
 
