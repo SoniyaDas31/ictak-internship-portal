@@ -1,0 +1,10 @@
+npm install mongodb
+
+npm install mongoose
+
+Connnection String:
+mongodb+srv://dassubbulakshmi:<db_password>@cluster0.28e0n.mongodb.net/
+
+
+Username: dassubbulakshmi 
+Password: sB3rShudJ3PMXVYh

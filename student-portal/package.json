@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "mongodb": "^6.11.0",
+    "mongoose": "^8.8.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.1"
