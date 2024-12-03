@@ -6,7 +6,7 @@ Overview: Create Students view of ICTAK Internship Portal where students can sig
 and choose their internship topic and mark their progress in the portal with the help of weekly
 submissions and project reports.
 
-#Requirements:
+# Requirements:
 
 ● Home Page
 
@@ -18,20 +18,20 @@ submissions and project reports.
 
 ● Logout
 
-#A. Home Page
+# A. Home Page
 a. Proper home page with required design and graphics must be provided. A Signup and
 Login button should be there where the students can register using their details and login
 later to access the dashboard.
 
-#B. Signup Page
+# B. Signup Page
 a. Students must register by giving their details(Name, Email, Password,Phone number).
 The registration must be complete only if they have secured pass marks in the exit exam.
 
-#C. Login Page
+# C. Login Page
 a. Students must login with email and password.Their credentials must be verified and they
 must be redirected to the Student Dashboard.
 
-#D. Student Dashboard
+# D. Student Dashboard
 a. After successful login, the students are directed to the Dashboard where all the project
 topics available for them are listed.
 b. Once they click on a project topic, all the details regarding the project topic must be
@@ -41,7 +41,7 @@ d. Once the project topic is selected, the selection option must be disabled and
 should not be able to change the topic afterwards
 e. After topic selection, the student must be redirected to the Project Dashboard.
 
-#E. Project Dashboard
+# E. Project Dashboard
 a. The project Dashboard must have all the following information regarding the chosen
 project
 i. Project Overview Document—-- Detailed documentation of the project must be
@@ -64,5 +64,5 @@ queries and add comments like etc to other people’s queries as well.
 vii. Students must also be able to view the marks and comments provided for their
 respective submission.
 
-#F. Logout
+# F. Logout
 a. Logout button must be provided to signout of the portal
