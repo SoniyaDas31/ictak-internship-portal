@@ -51,21 +51,27 @@ project
 
 i. Project Overview Document—-- Detailed documentation of the project must be
 provided in the pdf or document Format.
+
 ii. Reference materials —---All the reference or learning materials regarding the
 internship must be mapped under this section week wise.
+
 iii. Weekly submission format and submission link— Under this section the
 format of weekly submission report must be given. A submission link with
 comments section and file upload or link submission must be provided. Weekly
 submission links must be open only at the end of each week.
+
 iv. Final Project Report Submission and Format:-----Under this section the format
 of project submission report must be given. A submission link with comments
 section and file upload or link submission must be provided.Should open only in
 the last week of submission.
+
 v. Viva-Voce format—- Format of Viva Voce must be provided and the submission
 link must be open only after the project report is submitted.
+
 vi. Discussion Forum— A forum for posting queries regarding the project must be
 integrated with the dashboard. Students must be able to view, post, edit their
 queries and add comments like etc to other people’s queries as well.
+
 vii. Students must also be able to view the marks and comments provided for their
 respective submission.
 
