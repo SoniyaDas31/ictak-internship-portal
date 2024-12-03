@@ -34,16 +34,21 @@ must be redirected to the Student Dashboard.
 # D. Student Dashboard
 a. After successful login, the students are directed to the Dashboard where all the project
 topics available for them are listed.
+
 b. Once they click on a project topic, all the details regarding the project topic must be
 displayed in the same page or separate page.
+
 c. There must be a provision to select the project topic.
+
 d. Once the project topic is selected, the selection option must be disabled and students
 should not be able to change the topic afterwards
+
 e. After topic selection, the student must be redirected to the Project Dashboard.
 
 # E. Project Dashboard
 a. The project Dashboard must have all the following information regarding the chosen
 project
+
 i. Project Overview Document—-- Detailed documentation of the project must be
 provided in the pdf or document Format.
 ii. Reference materials —---All the reference or learning materials regarding the
