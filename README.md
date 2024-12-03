@@ -1,7 +1,7 @@
 # ictak-internship-portal
 ICTAK Student Intership Portal
 
-#ICTAK Internship Portal—Student View
+# ICTAK Internship Portal—Student View
 Overview: Create Students view of ICTAK Internship Portal where students can signup and login
 and choose their internship topic and mark their progress in the portal with the help of weekly
 submissions and project reports.
