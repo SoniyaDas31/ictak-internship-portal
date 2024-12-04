@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './component/Navbar';
 import LoginStud from './component/Login';
 import StudentDashboard from './component/StudentDashboard';
+import ProjectDashboard from './component/ProjectDashboard';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -26,6 +27,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<LoginStud />}></Route>
           <Route path='/dashboard' element={<StudentDashboard />}></Route>
+          <Route path='/projects' element={<ProjectDashboard/>}></Route>
         </Routes>
       </Router>
     </>
