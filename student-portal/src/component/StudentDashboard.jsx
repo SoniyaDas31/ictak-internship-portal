@@ -25,16 +25,16 @@ const StudentDashboard = () => {
                                     <div className="row row-gap-3">
                                         <div className="col-3">
                                             <label htmlFor="">Student ID</label>
-                                            <input name="empName" type="text" placeholder="Student ID" className="form-control" />
+                                            <input name="studName" type="text" placeholder="Student ID" className="form-control" />
                                         </div>
                                         <div className="col-3">
 
                                             <label htmlFor="">Student Name</label>
-                                            <input name="empName" type="text" placeholder="Name" className="form-control" />
+                                            <input name="studName" type="text" placeholder="Name" className="form-control" />
                                         </div>
                                         <div className="col-3">
                                             <label htmlFor="">Email</label>
-                                            <input name="empName" type="text" placeholder="Email" className="form-control" />
+                                            <input name="studEmail" type="text" placeholder="Email" className="form-control" />
                                         </div>
 
                                     </div>
