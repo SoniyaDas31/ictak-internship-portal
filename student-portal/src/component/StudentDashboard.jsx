@@ -7,10 +7,7 @@ const StudentDashboard = () => {
 
     const navigate = useNavigate();
 
-    const handleSelectProject = (e) =>{
-        e.preventDefault();
-        navigate('/projects');
-    }
+    
 
     return (
         <>
@@ -69,15 +66,7 @@ const StudentDashboard = () => {
                                             <button className="btn btn-primary me-3 pl-2"  onClick={handleSelectProject}><i className="fa-regular fa-plus pe-2 text-primary text-primary pointer" ></i> Select Project </button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td className="text-center">002</td>
-                                        <td className="text-center">Library Website using Bootstrap</td>
-                                        <td className="text-center">Create a library website using Bootstrap framework</td>
-                                        <td className="text-center">
-                                            <button className="btn btn-secondary me-3 pl-2"><i className="fa-regular fa-eye pe-2 text-primary text-primary pointer" ></i> View Attachments </button>
-                                            <button className="btn btn-primary me-3 pl-2" onClick={handleSelectProject}><i className="fa-regular fa-plus pe-2 text-primary text-primary pointer" ></i> Select Project </button>
-                                        </td>
-                                    </tr>
+                                    
                                 </table>
                             </div>
                         </div>

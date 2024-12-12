@@ -1,0 +1,71 @@
+.project-dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  .dashboard-header {
+    text-align: center;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-header h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .dashboard-header p {
+    margin: 5px 0 0;
+  }
+  
+  .dashboard-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  section {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  section ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  section ul li {
+    margin-bottom: 5px;
+  }
+  
+  section a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  
+  section a:hover {
+    text-decoration: underline;
+  }
+  
+  .final-submission, .viva-voce {
+    grid-column: span 2;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-sections {
+      grid-template-columns: 1fr;
+    }
+  }
+  
