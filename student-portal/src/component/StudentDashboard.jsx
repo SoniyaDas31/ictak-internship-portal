@@ -12,7 +12,7 @@ const StudentDashboard = ({ student_id }) => {
     const [studentData, setStudentData] = useState({});
 
 
-
+    // fetching student details for requested id in the url
     useEffect(() => {
         const fetchProjectList = async () => {
             try {

@@ -8,18 +8,31 @@ const studentModel = require('../models/studentModel')
 const upload = require('../multer');
 router.use(express.json());
 
+router.get('/', async (req, res) => {
+  try {
+
+    const student = await studentModel.find();
+    if (!student) {
+      console.log(`Data not found`);
+      res.status(400).send("Student not found");
+    }
+    res.status(200).send(student)
+  } catch (error) {
+    res.status(500).send("error while fetching student details", error);
+  }
+});
 
 router.get('/:_id', async (req, res) => {
   try {
 
     const student = await studentModel.findById(req.params._id);
     if (!student) {
-      console.log(`Project with ID ${req.params._id} not found.`);
-      res.status(400).send("project not found");
+      console.log(`Student with ID ${req.params._id} not found.`);
+      res.status(400).send("student not found");
     }
     res.status(200).send(student)
   } catch (error) {
-    res.status(500).send("error while fetching project details", error);
+    res.status(500).send("error while fetching student details", error);
   }
 });
 //function to check the submission date

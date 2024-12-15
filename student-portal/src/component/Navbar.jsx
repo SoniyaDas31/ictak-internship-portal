@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {listContext} from '../App';
 
 const Navbar = () => {
+     const {student_id, setstudent_id} = useContext(listContext);
     const navigate = useNavigate();
     const handleLogout = () => {
         console.log("Log Out");
+        setstudent_id("");
         navigate('/');
     }
     return (
