@@ -3,27 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 const LoginStud = () => {
-    const [studentData, setStudentData] = useState({});
-    const navigate = useNavigate();
-     // fetching from mongo db student data using id
-     useEffect(() => {
-        const fetchStudentData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3000/students/${student_id}`);
-                setStudentData(response.data);
-                console.log(response.data);
-            } catch (err) {
-                console.error("Error fetching project details:", err);
-                setError("Failed to fetch project details.");
-            }
-        };
 
-        fetchStudentData();
-    }, [student_id]);
+    const navigate = useNavigate();
+    
 
     const formSubmit = (e) => {
         e.preventDefault();
-        
         console.log("Form Submitted");
         navigate('/dashboard');
     }
