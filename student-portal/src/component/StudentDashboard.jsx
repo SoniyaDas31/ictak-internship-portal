@@ -1,17 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import Navbar from "./Navbar";
-import { NavLink } from "react-router-dom";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import DocViewer from 'react-doc-viewer';
 
-const StudentDashboard = () => {
-
+const StudentDashboard = ({ student_id }) => {
+    console.log(`Student Id: ${student_id}`);
     const navigate = useNavigate();
 
-    
+    const [projectList, setProjectList] = useState([]);
+    const [studentData, setStudentData] = useState({});
+
+
+
+    useEffect(() => {
+        const fetchProjectList = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3000/project/`);
+                setProjectList(Array.from(response.data));
+                //console.log(response.data);
+                console.log(projectList);
+            } catch (err) {
+                console.error("Error fetching project details:", err);
+                setError("Failed to fetch project details.");
+            }
+        };
+
+        fetchProjectList();
+    }, []);
+
+    // fetching from mongo db student data using id
+    useEffect(() => {
+        const fetchStudentData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3000/students/${student_id}`);
+                setStudentData(response.data);
+                console.log(response.data);
+            } catch (err) {
+                console.error("Error fetching project details:", err);
+                setError("Failed to fetch project details.");
+            }
+        };
+
+        fetchStudentData();
+    }, [student_id]);
+
+    console.log(projectList);
+
+    const handleSelectProject = (id) => {
+        console.log(`Selected project is ${id}`);
+        navigate(`/projects/${id}`);
+
+    }
+
+    const handleViewDocument = (document_url) => {
+        console.log(`Attachment url : ${document_url}`);
+        window.open(`http://localhost:3000${document_url}`);
+
+    }
+
+
+
 
     return (
         <>
             <Navbar />
+
+
             <div className="container-fluid">
                 <div className="row mt-4 justify-content-center">
                     <div className="col-12">
@@ -21,20 +76,21 @@ const StudentDashboard = () => {
                                 <h5>Student Info</h5>
                             </div>
                             <div className="card-body">
-                                <form onSubmit="">
+
+                                <form>
                                     <div className="row row-gap-3">
                                         <div className="col-3">
                                             <label htmlFor="">Student ID</label>
-                                            <input name="studName" type="text" placeholder="Student ID" className="form-control" />
+                                            <input value={studentData?._id} disabled name="studName" type="text" placeholder="Student ID" className="form-control" />
                                         </div>
                                         <div className="col-3">
 
                                             <label htmlFor="">Student Name</label>
-                                            <input name="studName" type="text" placeholder="Name" className="form-control" />
+                                            <input value={studentData?.name} disabled name="studName" type="text" placeholder="Name" className="form-control" />
                                         </div>
                                         <div className="col-3">
                                             <label htmlFor="">Email</label>
-                                            <input name="studEmail" type="text" placeholder="Email" className="form-control" />
+                                            <input value={studentData?.email} disabled name="studEmail" type="text" placeholder="Email" className="form-control" />
                                         </div>
 
                                     </div>
@@ -57,16 +113,23 @@ const StudentDashboard = () => {
                                             <th scope="col" className="text-center">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tr>
-                                        <td className="text-center">001</td>
-                                        <td className="text-center">Job Portal in ReactJS</td>
-                                        <td className="text-center">Create a job portal using ReactJS and mongoDB cloud</td>
-                                        <td className="text-center">
-                                            <button className="btn btn-secondary me-3 pl-2"><i className="fa-regular fa-eye pe-2 text-primary text-primary pointer" ></i> View Attachments </button>
-                                            <button className="btn btn-primary me-3 pl-2"  onClick={handleSelectProject}><i className="fa-regular fa-plus pe-2 text-primary text-primary pointer" ></i> Select Project </button>
-                                        </td>
-                                    </tr>
-                                    
+                                    <tbody>
+                                        {projectList?.map((project, index) => {
+                                            return (
+                                                <tr>
+                                                    <td className="text-center">{index + 1}</td>
+                                                    <td className="text-center">{project?.title}</td>
+                                                    <td className="text-center">{project?.description}</td>
+                                                    <td className="text-center">
+                                                        <button className="btn btn-secondary me-3 pl-2" onClick={() => handleViewDocument(project?.overview_document)}><i className="fa-regular fa-eye pe-2 text-primary text-primary pointer" ></i> View Attachments </button>
+{/*                                                         
+                                                        <NavLink target='_blank' download={project?.overview_document} >Download</NavLink> */}
+                                                        <button className="btn btn-primary me-3 pl-2" onClick={() => handleSelectProject(project?._id)}><i className="fa-regular fa-plus pe-2 text-primary text-primary pointer" ></i> Select Project </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

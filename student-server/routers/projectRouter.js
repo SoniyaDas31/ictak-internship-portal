@@ -1,34 +1,49 @@
-const express=require('express');
-const mongoose=require('mongoose');
-const router=express.Router();
-const projectModel=require('../models/projectModel');
+const express = require('express');
+const mongoose = require('mongoose');
+const router = express.Router();
+const projectModel = require('../models/projectModel');
 const upload = require('../multer');
 router.use(express.json());
 
-router.get('/:_id',async (req,res)=>{
-    try {
-        
-        const project=await projectModel.findById(req.params._id) ;
-  if(!project){
-    console.log(`Project with ID ${req.params._id} not found.`);
-   res.status(400).send("project not found");
-  }
- res.status(200).send(project)
-    } catch (error) {
-        res.status(500).send("error while fetching project details",error);
+router.get('/:_id', async (req, res) => {
+  try {
+
+    const project = await projectModel.findById(req.params._id);
+    if (!project) {
+      console.log(`Project with ID ${req.params._id} not found.`);
+      res.status(400).send("project not found");
     }
+    res.status(200).send(project)
+  } catch (error) {
+    res.status(500).send("error while fetching project details", error);
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+
+    const project = await projectModel.find();
+    //console.log(`Project throws ${project}`);
+    if (!project) {
+      console.log(`Data not found`);
+      res.status(400).send("project not found");
+    }
+    res.status(200).send(project)
+  } catch (error) {
+    res.status(500).send("error while fetching project details", error);
+  }
 });
 
 router.post("/", async (req, res) => {
-    const { title, description, overview_document, reference_material } = req.body;
-    try {
-      const newProject = new projectModel({ title, description, overview_document, reference_material });
-      await newProject.save();
-      res.json(newProject);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
+  const { title, description, overview_document, reference_material } = req.body;
+  try {
+    const newProject = new projectModel({ title, description, overview_document, reference_material });
+    await newProject.save();
+    res.json(newProject);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 router.use('/uploads', express.static('uploads'))
 
 
@@ -44,11 +59,11 @@ router.post('/:_id/overview', upload.single('overview_document'), async (req, re
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
- project.overview_document=`/uploads/${req.file.filename}`
-   
-    
-    
-   
+    project.overview_document = `/uploads/${req.file.filename}`
+
+
+
+
 
     await project.save();
 
@@ -72,10 +87,10 @@ router.post('/:_id/reference', upload.single('reference_material'), async (req, 
       return res.status(404).json({ message: 'Project not found' });
     }
 
-   
- project.reference_material=`/uploads/${req.file.filename}`  
-    
-   
+
+    project.reference_material = `/uploads/${req.file.filename}`
+
+
 
     await project.save();
 
@@ -90,4 +105,4 @@ router.post('/:_id/reference', upload.single('reference_material'), async (req, 
 
 
 
-module.exports=router;
+module.exports = router;

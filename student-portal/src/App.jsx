@@ -3,31 +3,19 @@ import Navbar from './component/Navbar';
 import LoginStud from './component/Login';
 import StudentDashboard from './component/StudentDashboard';
 import ProjectDashboard from './component/ProjectDashboard';
+import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
-
 const App = () => {
-
-  useEffect(() => {
-    const fetchData = async() => {
-      const res = await fetch('http://127.0.0.1:3000/');
-      const data = await res.json();
-      console.log(res);
-      console.log(data);
-    }
-    fetchData();
-  }, []);
-
-
   return (
     <>
       <Router>
         <Routes>
           <Route path='/' element={<LoginStud />}></Route>
-          <Route path='/dashboard' element={<StudentDashboard />}></Route>
-          <Route path='/projects' element={<ProjectDashboard/>}></Route>
+          <Route path='/dashboard' element={<StudentDashboard student_id={'67576a387de977b31c4991f6'} />}></Route>
+          <Route path='/projects/:id' element={<ProjectDashboard/>}></Route>
+          <Route path='/projects/' element={<ProjectDashboard/>}></Route>
         </Routes>
       </Router>
     </>

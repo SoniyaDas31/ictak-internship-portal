@@ -1,25 +1,25 @@
 
-const express=require('express');
-const mongoose=require('mongoose');
-const router=express.Router();
-const projectModel=require('../models/projectModel');
+const express = require('express');
+const mongoose = require('mongoose');
+const router = express.Router();
+const projectModel = require('../models/projectModel');
 // const getCurrentWeek=require('../models/projectModel')
-const studentModel=require('../models/studentModel')
+const studentModel = require('../models/studentModel')
 const upload = require('../multer');
 router.use(express.json());
 
 
-router.get('/:_id',async (req,res)=>{
+router.get('/:_id', async (req, res) => {
   try {
-      
-      const student=await studentModel.findById(req.params._id) ;
-if(!student){
-  console.log(`Project with ID ${req.params._id} not found.`);
- res.status(400).send("project not found");
-}
-res.status(200).send(student)
+
+    const student = await studentModel.findById(req.params._id);
+    if (!student) {
+      console.log(`Project with ID ${req.params._id} not found.`);
+      res.status(400).send("project not found");
+    }
+    res.status(200).send(student)
   } catch (error) {
-      res.status(500).send("error while fetching project details",error);
+    res.status(500).send("error while fetching project details", error);
   }
 });
 //function to check the submission date
@@ -27,14 +27,14 @@ res.status(200).send(student)
 
 
 // POST /students/:studentId/projects/:projectId/weekly-submission
-router.post("/:student_id/project/:project_id/weekly-submission",upload.single('submission_url'),
+router.post("/:student_id/project/:project_id/weekly-submission", upload.single('submission_url'),
   async (req, res) => {
     const { week, submission_comments } = req.body;
 
     try {
       const student = await studentModel.findById(req.params.student_id);
       const project = await projectModel.findById(req.params.project_id);
- 
+
       if (!student || !project) {
         return res.status(404).json({ error: "Student or Project not found." });
       }
@@ -60,9 +60,9 @@ router.post("/:student_id/project/:project_id/weekly-submission",upload.single('
       // Check if a submission for this week already exists
       const existingSubmission = enrolledProject.weeklysubmissions.find(
         (s) => s.week === parseInt(week));
-      
 
-     
+
+
 
       if (existingSubmission) {
         return res.status(400).json({ error: "Submission for this week already exists." });
@@ -71,7 +71,7 @@ router.post("/:student_id/project/:project_id/weekly-submission",upload.single('
       // Add the new weekly submission
       enrolledProject.weeklysubmissions.push({
         week: parseInt(week),
-        submission_url:`/uploads/${req.file.filename}`,
+        submission_url: `/uploads/${req.file.filename}`,
         submission_comments,
       });
 
@@ -90,13 +90,13 @@ router.post("/:student_id/project/:project_id/weekly-submission",upload.single('
 //   try {
 //     const student = await studentModel.findById(req.params.student_id);
 //     const project = await projectModel.findById(req.params.project_id);
-    
+
 //     if (!student || !project) {
 //       return res.status(404).json({ error: "Student or Project not found." });
 //     }
 
 //     student.submission_url=`/uploads/${req.file.filename}` ; 
-  
+
 
 //     await student.save();
 
@@ -135,4 +135,4 @@ const getCurrentWeek = (created_at) => {
 };
 
 
-module.exports=router;
+module.exports = router;
