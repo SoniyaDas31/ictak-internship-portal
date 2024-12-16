@@ -6,6 +6,7 @@ import ProjectDashboard from './component/ProjectDashboard';
 import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './component/Home';
 
 const listContext = createContext();
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path='/dashboard' element={<StudentDashboard student_id={student_id} />}></Route>
           <Route path='/projects/:id' element={<ProjectDashboard />}></Route>
           <Route path='/projects/' element={<ProjectDashboard />}></Route>
+          <Route path='/home' element={<Home/>}></Route>
         </Routes>
       </Router>
       </listContext.Provider>

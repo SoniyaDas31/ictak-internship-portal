@@ -4,3 +4,20 @@ body{
   width: auto;
 }
 
+
+.footer {
+  background: #f1f1f1;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.hero {
+  height: 100vh;
+  background-image: url('..\images/page1.png'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 10px;
+}
