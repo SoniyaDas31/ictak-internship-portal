@@ -5,11 +5,22 @@ import axios from 'axios';
 import DocViewer from 'react-doc-viewer';
 
 const StudentDashboard = ({ student_id }) => {
+
     console.log(`Student Id: ${student_id}`);
     const navigate = useNavigate();
 
+    if (!student_id) {
+        console.log('student id is blank');
+        navigate('/login');
+    }
+
     const [projectList, setProjectList] = useState([]);
     const [studentData, setStudentData] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [projectid, setProjectId] = useState([]);
+
+    const session = localStorage.getItem('session');
+    console.log(`Session is ${session}`);
 
 
     // fetching student details for requested id in the url
@@ -45,13 +56,30 @@ const StudentDashboard = ({ student_id }) => {
         fetchStudentData();
     }, [student_id]);
 
-    console.log(projectList);
+    //console.log(projectList);
 
     const handleSelectProject = (id) => {
         console.log(`Selected project is ${id}`);
-        navigate(`/projects/${id}`);
+        localStorage.setItem('projectid', id);
+        const idlocal = localStorage.getItem('projectid');
+        console.log('Project Id stored', idlocal);
+        navigate(`/projects/`);
 
     }
+
+    // Define function that will open the modal
+    const handleOpenModal = (projectId) => {
+        // setProjectId(projectId);
+        console.log(`Project Id ${projectId}`);
+        setProjectId(`${projectId}`);
+        setIsModalOpen(true);
+        return projectid;
+    };
+
+    // Define function that will close the modal
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleViewDocument = (document_url) => {
         console.log(`Attachment url : ${document_url}`);
@@ -79,10 +107,10 @@ const StudentDashboard = ({ student_id }) => {
 
                                 <form>
                                     <div className="row row-gap-3">
-                                        <div className="col-3">
+                                        {/* <div className="col-3">
                                             <label htmlFor="">Student ID</label>
                                             <input value={studentData?._id} disabled name="studName" type="text" placeholder="Student ID" className="form-control" />
-                                        </div>
+                                        </div> */}
                                         <div className="col-3">
 
                                             <label htmlFor="">Student Name</label>
@@ -122,15 +150,32 @@ const StudentDashboard = ({ student_id }) => {
                                                     <td className="text-center">{project?.description}</td>
                                                     <td className="text-center">
                                                         <button className="btn btn-secondary me-3 pl-2" onClick={() => handleViewDocument(project?.overview_document)}><i className="fa-regular fa-eye pe-2 text-primary text-primary pointer" ></i> View Attachments </button>
-{/*                                                         
-                                                        <NavLink target='_blank' download={project?.overview_document} >Download</NavLink> */}
-                                                        <button className="btn btn-primary me-3 pl-2" onClick={() => handleSelectProject(project?._id)}><i className="fa-regular fa-plus pe-2 text-primary text-primary pointer" ></i> Select Project </button>
+                                                        <button className="btn btn-primary me-3 pl-2" data-toggle="modal" onClick={() => handleOpenModal(project?._id)} data-target="#projectConfirmModal"><i className="fa-regular fa-plus pe-2 text-primary text-primary pointer" ></i> Select Project </button>
+
                                                     </td>
                                                 </tr>
                                             );
                                         })}
                                     </tbody>
                                 </table>
+                                <div id="projectConfirmModal" className={`modal ${isModalOpen ? 'open' : ''}`} role="dialog">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                                <h4 className="modal-title">Project Selection Confirmation</h4>
+                                            </div>
+                                            <div className="modal-body">
+                                                <p>Once the Project is selected cannot be changed</p>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-primary" onClick={() => handleSelectProject(projectid)}>Confirm</button>
+                                                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => handleCloseModal}>Cancel</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

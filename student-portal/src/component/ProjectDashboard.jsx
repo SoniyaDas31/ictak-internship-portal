@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
 import axios from 'axios';
 import { Alert, Box, Button, CircularProgress, Paper, TextareaAutosize, TextField, Typography } from '@mui/material';
 
+
 const ProjectDashboard = ({ project_id, student_id }) => {
 
-  const { id } = useParams();
+  const navigate = useNavigate();
 
-  console.log(id);
+  // const { id } = useParams();
+  // console.log(id);
+
+  const projectidlocal = localStorage.getItem('projectid');
+  
+  const session = localStorage.getItem('session');
+  if(session===false){
+    console.log("logged out");
+  }
+  if (!projectidlocal) {
+    console.log('project id is blank');
+    navigate('/login');
+  }
 
   const [project, setProject] = useState([]);
   const [projectData, setProjectData] = useState({});
-  
+
   const [error, setError] = useState("");
   const [week, setWeek] = useState("");
 
@@ -25,7 +38,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/project/${id}`);
+        const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
         setProject(response.data);
         setProjectData(response.data);
         console.log(response.data);
@@ -38,7 +51,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     };
 
     fetchProjectDetails();
-  }, [id]);
+  }, [projectidlocal]);
   //weekly submission
 
   const handleWeeklySubmission = async (e) => {
@@ -83,9 +96,9 @@ const ProjectDashboard = ({ project_id, student_id }) => {
 
         {/* Project Details Section */}
         {/* {loading ? ( */}
-          {/* <CircularProgress /> */}
+        {/* <CircularProgress /> */}
         {/* ) : project? ( */}
-        {project? (
+        {project ? (
           <Paper sx={{ padding: "1rem", marginBottom: "2rem" }} elevation={3}>
             <Typography variant="h5">{project.title}</Typography>
             <Typography variant="body1" sx={{ marginBottom: "1rem" }}>

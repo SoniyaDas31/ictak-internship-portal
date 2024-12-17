@@ -12,20 +12,24 @@ const listContext = createContext();
 
 const App = () => {
 
+  const studentidlocal = localStorage.getItem('studentid');
+  const projectidlocal = localStorage.getItem('projectid');
   const [student_id, setstudent_id] = useState({});
   //const student_id_loggedin = '67576a387de977b31c4991f6';
   console.log(student_id);
-
+  console.log(projectidlocal);
+  console.log('Local Storage Student Id', studentidlocal);
+  console.log('Local Storage Project Id', projectidlocal);
+  
   return (
     <>
     <listContext.Provider value={{student_id, setstudent_id}}>
       <Router>
         <Routes>
-          <Route path='/' element={<LoginStud />}></Route>
-          <Route path='/dashboard' element={<StudentDashboard student_id={student_id} />}></Route>
-          <Route path='/projects/:id' element={<ProjectDashboard />}></Route>
-          <Route path='/projects/' element={<ProjectDashboard />}></Route>
-          <Route path='/home' element={<Home/>}></Route>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/dashboard' element={<StudentDashboard student_id={studentidlocal} />}></Route>
+          <Route path='/projects/' element={<ProjectDashboard project_id={projectidlocal} student_id={studentidlocal} />}></Route>
+          <Route path='/login' element={<LoginStud/>}></Route>
         </Routes>
       </Router>
       </listContext.Provider>

@@ -1,16 +1,28 @@
-import React, {useContext} from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {listContext} from '../App';
+import { listContext } from '../App';
 
 const Navbar = () => {
-     const {student_id, setstudent_id} = useContext(listContext);
+    const { student_id, setstudent_id } = useContext(listContext);
     const navigate = useNavigate();
     const handleLogout = () => {
         console.log("Log Out");
         setstudent_id("");
+        localStorage.setItem('studentid', '');
+        localStorage.setItem('projectid', '');
+        localStorage.setItem('session', false);
         navigate('/');
     }
+
+    const session = localStorage.getItem('session');
+   
+
+    const handleLogin = () => {
+        navigate('/login');
+    }
+
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -22,20 +34,24 @@ const Navbar = () => {
                         </button>
 
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <ul className="navbar-nav mr-auto mt-2 mt-lg-0 me-4">
                                 <li className="nav-item active">
-                                    <NavLink to="/home" className="nav-link">Home </NavLink>
+                                    <NavLink to="/" className="nav-link">Home </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#">About</a>
+                                    <a className="nav-link" href="/dashboard">Dashboard</a>
                                 </li>
 
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#">Contact</a>
+                                    <a className="nav-link" href="/projects">Projects</a>
                                 </li>
                             </ul>
                             <form className="form-inline my-2 my-lg-0">
-                                    <button className="btn btn-outline-danger my-2 my-sm-0" type="button" onClick={()=>handleLogout()}>Log Out</button>
+                               
+                                   <button className="btn btn-outline-primary my-2 my-sm-0 me-4" type="button" onClick={() => handleLogin()}>Log In</button>
+                                
+                                    <button className="btn btn-outline-danger my-2 my-sm-0" type="button" onClick={() => handleLogout()}>Log Out</button>
+                               
                             </form>
 
 

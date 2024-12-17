@@ -21,3 +21,24 @@ body{
   justify-content: space-between;
   padding-top: 10px;
 }
+
+.navbar-expand-lg .navbar-collapse{
+  justify-content: right;
+}
+
+.modal.open{display: block !important; background: rgba(0, 0, 0, 0.5);}
+
+.modal .close {
+  position: absolute;
+  right: 11px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 14px;
+  border-color: red;
+  color: red;
+  background: #fff;
+}
