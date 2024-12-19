@@ -52,7 +52,7 @@ router.post('/:student_id/:project_id/', async (req, res) => {
       (p) => p.project_id.toString() === req.params.project_id
     );
     
-    //console.log(enrolledProject);
+    console.log(enrolledProject);
 
     if (!enrolledProject) {
       console.log('Student is not enrolled in this project.');

@@ -187,7 +187,7 @@ const StudentDashboard = ({ student_id }) => {
                             </div>
                         </div>
 
-
+                        {/* project list */}
                         <div className="card mt-4">
                             <div className="card-header">
                                 <h5>Project List</h5>
@@ -219,11 +219,11 @@ const StudentDashboard = ({ student_id }) => {
                                         })}
                                     </tbody>
                                 </table>
-                                <div id="projectConfirmModal" className={`modal ${isModalOpen ? 'open' : 'close'}`} role="dialog">
+                                <div id="projectConfirmModal" className={`modal ${isModalOpen ? 'open' : ''}`} role="dialog">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
                                             <div className="modal-header">
-                                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                                <button type="button" className="close" data-dismiss="modal" onClick={() => handleCloseModal()}>&times;</button>
                                                 <h4 className="modal-title">Project Selection Confirmation</h4>
                                             </div>
                                             <div className="modal-body">
@@ -231,7 +231,7 @@ const StudentDashboard = ({ student_id }) => {
                                             </div>
                                             <div className="modal-footer">
                                                 <button type="button" className="btn btn-primary" onClick={() => handleSelectProject(projectid)}>Confirm</button>
-                                                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => handleCloseModal}>Cancel</button>
+                                                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => handleCloseModal()}>Cancel</button>
                                             </div>
                                             {submissionSuccess && <Alert severity="success">{submissionSuccess}</Alert>}
                                         </div>

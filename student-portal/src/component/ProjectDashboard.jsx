@@ -63,7 +63,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/students/${student_id}/project/${id}/weekly-submission`,
+        `http://localhost:3000/students/${student_id}/project/${projectidlocal}/weekly-submission`,
         formData,
         {
           headers: {
