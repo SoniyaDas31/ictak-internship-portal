@@ -127,7 +127,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
       // Add the new weekly submission
       enrolledProject.weeklysubmissions.push({
         week: parseInt(week),
-        submission_url: `/ uploads / ${req.file.filename} `,
+        submission_url: `/uploads/${req.file.filename} `,
         submission_comments,
       });
 
