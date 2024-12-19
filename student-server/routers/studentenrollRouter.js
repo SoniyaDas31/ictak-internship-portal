@@ -64,15 +64,16 @@ router.post('/:student_id/:project_id/', async (req, res) => {
         project_id: `${req.params.project_id.toString()}`,
       });
 
-      //console.log(student.enrolled_projects);
+      // console.log(student.enrolled_projects);
 
       await student.save();
       //res.status(200).send(student.enrolled_projects);
       res.status(200).json({ message: "Project added successfully." });
+      console.log('Project added successfully.');
 
     } else {
       res.status(200).json({ message: "Already enrolled successfully." });
-      //console.log('Already Enrolled');
+      console.log('Already Enrolled');
     }
     //res.status(200).send(student);
 

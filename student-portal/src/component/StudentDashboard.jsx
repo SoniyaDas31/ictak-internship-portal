@@ -3,11 +3,14 @@ import Navbar from "./Navbar";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import DocViewer from 'react-doc-viewer';
+import { Alert, Box, Button, CircularProgress, Paper, TextareaAutosize, TextField, Typography } from '@mui/material';
 
 const StudentDashboard = ({ student_id }) => {
 
     console.log(`Student Id: ${student_id}`);
     const navigate = useNavigate();
+
+    const projectidlocal = localStorage.getItem('projectid');
 
     if (!student_id) {
         console.log('student id is blank');
@@ -15,22 +18,25 @@ const StudentDashboard = ({ student_id }) => {
     }
 
     const [projectList, setProjectList] = useState([]);
+    const [selectedProject, setSelectedProject] = useState([]);
     const [studentData, setStudentData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [projectid, setProjectId] = useState([]);
+    const [submissionComments, setSubmissionComments] = useState("");
+    const [submissionSuccess, setSubmissionSuccess] = useState("");
 
     const session = localStorage.getItem('session');
     console.log(`Session is ${session}`);
 
 
-    // fetching student details for requested id in the url
+    // fetching Project List for Student to select
     useEffect(() => {
         const fetchProjectList = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/project/`);
                 setProjectList(Array.from(response.data));
                 //console.log(response.data);
-                console.log(projectList);
+                //console.log(projectList);
             } catch (err) {
                 console.error("Error fetching project details:", err);
                 setError("Failed to fetch project details.");
@@ -40,13 +46,16 @@ const StudentDashboard = ({ student_id }) => {
         fetchProjectList();
     }, []);
 
+    
+    
+
     // fetching from mongo db student data using id
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/students/${student_id}`);
                 setStudentData(response.data);
-                console.log(response.data);
+                //console.log(response.data);
             } catch (err) {
                 console.error("Error fetching project details:", err);
                 setError("Failed to fetch project details.");
@@ -56,14 +65,65 @@ const StudentDashboard = ({ student_id }) => {
         fetchStudentData();
     }, [student_id]);
 
+    const isProject = studentData?.enrolled_projects;
+    if(isProject){
+        //console.log(isProject);
+        isProject.forEach(function(value,key) {
+            console.log(value.project_id);
+            localStorage.setItem('projectid', value.project_id);
+         });
+    }
+    console.log('Project ID',projectidlocal);
+
+    // fetching project details for requested id in the url
+    useEffect(() => {
+        const fetchProjectDetails = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
+            setSelectedProject(response.data);
+            console.log(response.data.id);
+            console.log(selectedProject);
+            const project_title = selectedProject?.title;
+            console.log(project_title);
+        } catch (err) {
+            console.error("Error fetching project details:", err);
+            setError("Failed to fetch project details.");
+        }
+        };
+
+        fetchProjectDetails();
+    }, [projectidlocal]);
+
     //console.log(projectList);
 
     const handleSelectProject = (id) => {
         console.log(`Selected project is ${id}`);
         localStorage.setItem('projectid', id);
-        const idlocal = localStorage.getItem('projectid');
-        console.log('Project Id stored', idlocal);
-        navigate(`/projects/`);
+        const project_idlocal = localStorage.getItem('projectid');
+        console.log('Project Id stored', project_idlocal);
+        const postProjectData = async() =>{
+            console.log('posting selected project');
+            try {
+                const response = await axios.post(
+                  `http://localhost:3000/students/${student_id}/${project_idlocal}`
+                );
+          
+                setSubmissionSuccess(response.data.message);
+                console.log(submissionSuccess);
+                localStorage.setItem('projectid', id);
+                setTimeout(()=> {
+                    navigate(`/projects/`);
+                },2000);
+                setSubmissionComments("");
+              } catch (err) {
+                console.error("Error submitting weekly submission:", err);
+                setError("Failed to submit the weekly submission.");
+              }
+        }
+        postProjectData();
+
+        
+       // navigate(`/projects/`);
 
     }
 
@@ -127,6 +187,7 @@ const StudentDashboard = ({ student_id }) => {
                             </div>
                         </div>
 
+
                         <div className="card mt-4">
                             <div className="card-header">
                                 <h5>Project List</h5>
@@ -158,7 +219,7 @@ const StudentDashboard = ({ student_id }) => {
                                         })}
                                     </tbody>
                                 </table>
-                                <div id="projectConfirmModal" className={`modal ${isModalOpen ? 'open' : ''}`} role="dialog">
+                                <div id="projectConfirmModal" className={`modal ${isModalOpen ? 'open' : 'close'}`} role="dialog">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
                                             <div className="modal-header">
@@ -172,6 +233,7 @@ const StudentDashboard = ({ student_id }) => {
                                                 <button type="button" className="btn btn-primary" onClick={() => handleSelectProject(projectid)}>Confirm</button>
                                                 <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => handleCloseModal}>Cancel</button>
                                             </div>
+                                            {submissionSuccess && <Alert severity="success">{submissionSuccess}</Alert>}
                                         </div>
 
                                     </div>
