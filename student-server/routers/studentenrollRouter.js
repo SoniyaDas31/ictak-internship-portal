@@ -35,8 +35,24 @@ router.get('/:_id', async (req, res) => {
     res.status(500).send("error while fetching student details", error);
   }
 });
-//function to check the submission date
 
+//function to check assign Project id to student
+router.post('/:student_id/:project_id/', async(req, res)=> {
+  try {
+    const student = await studentModel.findById(req.params.student_id);
+    const project = await projectModel.findById(req.params.project_id);
+    console.log(`Student with ID ${req.params.student_id} .`);
+    console.log(`Project with ID ${req.params.project_id} .`);
+    if (!student) {
+      console.log(`Student with ID ${req.params.student_id} not found.`);
+      res.status(400).send("student not found");
+    }
+    res.status(200).send(student);
+    //res.status(200).send(project);
+  } catch (error) {
+    res.status(500).send("error while fetching student details", error);
+  }
+});
 
 
 // POST /students/:studentId/projects/:projectId/weekly-submission
