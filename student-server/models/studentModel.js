@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const studentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
@@ -7,6 +8,7 @@ const studentSchema = new mongoose.Schema({
 
   enrolled_projects: [
     {
+      _id: false,
       project_id: { type: mongoose.Schema.Types.ObjectId, ref: "projects" }, // Connect to Projects
       weeklysubmissions: [
         {
@@ -17,7 +19,7 @@ const studentSchema = new mongoose.Schema({
           submitted_at: { type: Date, default: Date.now },
         },
       ],
-    },
+    }
   ],
 });
 

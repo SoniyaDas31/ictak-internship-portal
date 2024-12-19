@@ -37,18 +37,46 @@ router.get('/:_id', async (req, res) => {
 });
 
 //function to check assign Project id to student
-router.post('/:student_id/:project_id/', async(req, res)=> {
+router.post('/:student_id/:project_id/', async (req, res) => {
   try {
     const student = await studentModel.findById(req.params.student_id);
     const project = await projectModel.findById(req.params.project_id);
-    console.log(`Student with ID ${req.params.student_id} .`);
-    console.log(`Project with ID ${req.params.project_id} .`);
+    //console.log(`Student with ID ${req.params.student_id} .`);
+    //console.log(`Project with ID ${req.params.project_id} .`);
     if (!student) {
-      console.log(`Student with ID ${req.params.student_id} not found.`);
+      //console.log(`Student with ID ${req.params.student_id} not found.`);
       res.status(400).send("student not found");
     }
-    res.status(200).send(student);
-    //res.status(200).send(project);
+    // Find the enrolled project
+    const enrolledProject = student.enrolled_projects.find(
+      (p) => p.project_id.toString() === req.params.project_id
+    );
+    
+    //console.log(enrolledProject);
+
+    if (!enrolledProject) {
+      console.log('Student is not enrolled in this project.');
+      //return res.status(400).json({ error: "Student is not enrolled in this project." });
+      //console.log(enrolledProject);
+
+      //let enrolledProject = [];
+      student.enrolled_projects.push({
+        project_id: `${req.params.project_id.toString()}`,
+      });
+
+      //console.log(student.enrolled_projects);
+
+      await student.save();
+      //res.status(200).send(student.enrolled_projects);
+      res.status(200).json({ message: "Project added successfully." });
+
+    } else {
+      res.status(200).json({ message: "Already enrolled successfully." });
+      //console.log('Already Enrolled');
+    }
+    //res.status(200).send(student);
+
+
   } catch (error) {
     res.status(500).send("error while fetching student details", error);
   }
@@ -67,13 +95,13 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
       if (!student || !project) {
         return res.status(404).json({ error: "Student or Project not found." });
       }
-      // student.submission_url=`/uploads/${req.file.filename}` ; 
+      // student.submission_url=`/ uploads / ${ req.file.filename }` ; 
       // Calculate the current week
       const currentWeek = getCurrentWeek(project.created_at);
 
       if (parseInt(week) > currentWeek) {
         return res.status(400).json({
-          error: `Submission link for week ${week} is not yet open. Current week is ${currentWeek}.`
+          error: `Submission link for week ${week} is not yet open.Current week is ${currentWeek}.`
         });
       }
 
@@ -91,8 +119,6 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
         (s) => s.week === parseInt(week));
 
 
-
-
       if (existingSubmission) {
         return res.status(400).json({ error: "Submission for this week already exists." });
       }
@@ -100,7 +126,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
       // Add the new weekly submission
       enrolledProject.weeklysubmissions.push({
         week: parseInt(week),
-        submission_url: `/uploads/${req.file.filename}`,
+        submission_url: `/ uploads / ${req.file.filename} `,
         submission_comments,
       });
 
@@ -124,7 +150,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
 //       return res.status(404).json({ error: "Student or Project not found." });
 //     }
 
-//     student.submission_url=`/uploads/${req.file.filename}` ; 
+//     student.submission_url=`/ uploads / ${ req.file.filename } ` ; 
 
 
 //     await student.save();
