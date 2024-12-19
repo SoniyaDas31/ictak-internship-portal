@@ -69,9 +69,11 @@ const StudentDashboard = ({ student_id }) => {
     if(isProject){
         //console.log(isProject);
         isProject.forEach(function(value,key) {
-            console.log(value.project_id);
+            //console.log(value.project_id);
             localStorage.setItem('projectid', value.project_id);
          });
+    }else{
+        localStorage.setItem('projectid', '');
     }
     console.log('Project ID',projectidlocal);
 
@@ -81,10 +83,8 @@ const StudentDashboard = ({ student_id }) => {
         try {
             const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
             setSelectedProject(response.data);
-            console.log(response.data.id);
-            console.log(selectedProject);
-            const project_title = selectedProject?.title;
-            console.log(project_title);
+            console.log('Selected Project is :',response.data.title);
+            
         } catch (err) {
             console.error("Error fetching project details:", err);
             setError("Failed to fetch project details.");
