@@ -139,7 +139,7 @@ const handleFinalSubmission = async (e) => {
   return (
     <div>
       <Navbar></Navbar>
-      <Box sx={{ padding: "2rem" }}>
+      <Box sx={{ padding: "1rem"}}>
         <Typography variant="h4" gutterBottom>
           Project Dashboard
         </Typography>
@@ -232,7 +232,7 @@ const handleFinalSubmission = async (e) => {
 
 {/* //Final submission */}
  
-  <Paper sx={{ padding: "1rem" }} elevation={3}>
+  <Paper sx={{ padding: "1rem",marginTop:"2rem" }} elevation={3}>
       <Typography variant="h5" gutterBottom>
         Final Project Submission<br></br>
         {project.final_format && (
