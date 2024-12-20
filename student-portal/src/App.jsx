@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import Navbar from './component/Navbar';
 import LoginStud from './component/Login';
+import Signup from './component/Signup';
 import StudentDashboard from './component/StudentDashboard';
 import ProjectDashboard from './component/ProjectDashboard';
 import axios from 'axios';
@@ -30,6 +31,7 @@ const App = () => {
           <Route path='/dashboard' element={<StudentDashboard student_id={studentidlocal} />}></Route>
           <Route path='/projects/' element={<ProjectDashboard project_id={projectidlocal} student_id={studentidlocal} />}></Route>
           <Route path='/login' element={<LoginStud/>}></Route>
+          <Route path='/signup' element={<Signup/>}></Route>
         </Routes>
       </Router>
       </listContext.Provider>

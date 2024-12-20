@@ -35,7 +35,7 @@ const Navbar2 = () => {
 
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav mr-auto mt-2 mt-lg-0 me-4">
-                                <li className="nav-item active">
+                                {/* <li className="nav-item active">
                                     <NavLink to="/" className="nav-link">Home </NavLink>
                                 </li>
                                 <li className="nav-item">
@@ -44,7 +44,7 @@ const Navbar2 = () => {
 
                                 <li className="nav-item">
                                     <a className="nav-link" href="/projects">Projects</a>
-                                </li>
+                                </li> */}
                             </ul>
                             <form className="form-inline my-2 my-lg-0">
                                
