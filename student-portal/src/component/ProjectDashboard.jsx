@@ -26,12 +26,15 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [project, setProject] = useState([]);
   const [projectData, setProjectData] = useState({});
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
+  const[sucess,setSucess]=useState('')
   const [week, setWeek] = useState("");
 
   const [submissionFile, setSubmissionFile] = useState(null);
   const [submissionComments, setSubmissionComments] = useState("");
-  const [submissionSuccess, setSubmissionSuccess] = useState("");
+
+  // const[finalSubmissionFile,setFinalSubmissionFile]=useState
+  // const [submissionSuccess, setSubmissionSuccess] = useState("");
   // const [loading, setLoading] = useState(true);
 
   // fetching project details for requested id in the url
@@ -44,9 +47,17 @@ const ProjectDashboard = ({ project_id, student_id }) => {
         console.log(response.data);
         console.log(projectData);
         console.log(project);
-      } catch (err) {
-        console.error("Error fetching project details:", err);
-        setError("Failed to fetch project details.");
+        setSucess(response.data.message||"Project details fetched successfully")
+        setError('')
+      } catch (error) {
+        // console.error("Error fetching project details:", err);
+        // setError("Failed to fetch project details.");
+        if (error.response) {
+          setError(error.response.data.error || 'An error occurred during submission.');
+        } else {
+          setError('Unable to connect to the server.');
+        }
+        setSucess('')
       }
     };
 
@@ -62,6 +73,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     formData.append("submission_comments", submissionComments);
 
     try {
+      
       const response = await axios.post(
         `http://localhost:3000/students/${student_id}/project/${projectidlocal}/weekly-submission`,
         formData,
@@ -72,13 +84,19 @@ const ProjectDashboard = ({ project_id, student_id }) => {
         }
       );
 
-      setSubmissionSuccess(response.data.message);
+      // setSubmissionSuccess(response.data.message);
       setWeek("");
       setSubmissionFile(null);
       setSubmissionComments("");
-    } catch (err) {
-      console.error("Error submitting weekly submission:", err);
-      setError("Failed to submit the weekly submission.");
+      setSucess(response.data.message||"Weekly submission added successfully");
+      setError('')
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error || 'An error occurred during submission.');
+      } else {
+        setError('Unable to connect to the server.');
+      }
+      setSucess('')
     }
   };
 
@@ -91,7 +109,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
         </Typography>
 
         {error && <Alert severity="error">{error}</Alert>}
-        {submissionSuccess && <Alert severity="success">{submissionSuccess}</Alert>}
+        {sucess && <Alert severity="success">{sucess}</Alert>}
 
 
         {/* Project Details Section */}
@@ -126,6 +144,17 @@ const ProjectDashboard = ({ project_id, student_id }) => {
         <Paper sx={{ padding: "1rem" }} elevation={3}>
           <Typography variant="h5" gutterBottom>
             Weekly Submission
+            {project.weekly_format && (
+              <Button
+                variant="contained"
+                color="primary"
+                href={project.weekly_format}
+                target="_blank"
+                download
+              >
+                Download Project Overview
+              </Button>
+            )}
           </Typography>
           <form onSubmit={handleWeeklySubmission}>
             <TextField
