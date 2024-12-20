@@ -6,6 +6,7 @@ import { listContext } from '../App';
 const LoginStud = () => {
 
     const [loginError, setloginError] = useState(false);
+    const [loginComments, setLoginComments] = useState("");
     const [studentData, setStudentData] = useState([]);
     const { student_id, setstudent_id } = useContext(listContext);
 
@@ -36,21 +37,34 @@ const LoginStud = () => {
         console.log(studentData);
         let form_email = e.target.elements.email.value;
         let form_password = e.target.elements.password.value;
-        console.log(form_email);
+        //console.log(form_email);
         const emailValidation = studentData.find((user) => user.email === form_email);
-        console.log(emailValidation.password);
-        if (emailValidation.password === form_password) {
-            setloginError(false);
-            console.log(emailValidation._id);
-            setstudent_id(emailValidation._id);
-            localStorage.setItem('studentid', emailValidation._id);
-            localStorage.setItem('session', true);
-            console.log(student_id);
-            navigate('/dashboard');
-        } else {
-            setloginError(true);
-            localStorage.setItem('session', false);
+        //console.log(emailValidation.password);
+        if(emailValidation){
+            console.log("Email Found");
+            if (emailValidation.password === form_password) {
+                setloginError(false);
+                setLoginComments("Login Success");
+                console.log(loginComments);
+                //console.log(emailValidation._id);
+                setstudent_id(emailValidation._id);
+                localStorage.setItem('studentid', emailValidation._id);
+                localStorage.setItem('session', true);
+               // console.log(student_id);
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 2000);
+            } else {
+                setloginError(true);
+                localStorage.setItem('session', false);
+                setLoginComments("Please check your password!");
+                console.log(loginComments);
+            }
+        }else{
+            setLoginComments("Email Not found");
+            console.log(loginComments);
         }
+       
 
         console.log("Form Submitted");
     }
@@ -71,7 +85,7 @@ const LoginStud = () => {
                                 <div className="row row-gap-3">
                                     <div className="col-12">
                                         <label htmlFor="">Email</label>
-                                        <input id="email" name="empEmail" type="email" placeholder="Email" className="form-control" />
+                                        <input id="email" name="empEmail" type="email" placeholder="Email" className="form-control" required />
                                     </div>
                                     <div className="col-12">
                                         <label htmlFor="">Password</label>
@@ -87,11 +101,15 @@ const LoginStud = () => {
                                 <div className='row mt-4'>
                                     {loginError ? (
                                         <div className="alert alert-danger col-8 ml-4" role="alert">
-                                            Login failed Please check your email and password
+                                            {loginComments}
                                         </div>
                                     ) : (
                                         <div className="alert alert-primary col-8 ml-4" role="alert">
-                                            Please enter email and password to login
+                                            {loginComments?(
+                                                <span>{loginComments}</span>
+                                            ):(
+                                                <span> Please enter email and password to login</span>
+                                            )}
                                         </div>
 
                                     )}
