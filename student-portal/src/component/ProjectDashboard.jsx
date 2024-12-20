@@ -27,15 +27,18 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [projectData, setProjectData] = useState({});
 
   const [error, setError] = useState('');
-  const [sucess,setSucess]=useState('')
+  const [sucess,setSucess]=useState('');
   const [week, setWeek] = useState("");
 
   const [submissionFile, setSubmissionFile] = useState(null);
   const [submissionComments, setSubmissionComments] = useState("");
 
-  // const[finalSubmissionFile,setFinalSubmissionFile]=useState
-  // const [submissionSuccess, setSubmissionSuccess] = useState("");
-  // const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState(new Date());
+    const [endDate] = useState(new Date("2024-12-22"));//Internship end date
+    const [comments, setComments] = useState("");
+    const [file, setFile] = useState(null);
+    const isSubmissionOpen = currentDate >= endDate;
+
 
   // fetching project details for requested id in the url
   useEffect(() => {
@@ -100,6 +103,39 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     }
   };
 
+//Final submission
+const handleFinalSubmission = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("comments", comments);
+  formData.append("file_url", file);
+
+  try {
+    const response = await axios.post(
+      `http://localhost:3000/students/${student_id}/project/${projectidlocal}/final-submission`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+ 
+      setFile(null);
+      setComments("");
+      setSucess(response.data.message||"Final submission added successfully");
+      setError('')
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error || 'An error occurred during submission.');
+      } else {
+        setError('Unable to connect to the server.');
+      }
+      setSucess('')
+    } 
+};
+
   return (
     <div>
       <Navbar></Navbar>
@@ -143,7 +179,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
         {/* Weekly Submission Section */}
         <Paper sx={{ padding: "1rem" }} elevation={3}>
           <Typography variant="h5" gutterBottom>
-            Weekly Submission
+            Weekly Submission<br></br>
             {project.weekly_format && (
               <Button
                 variant="contained"
@@ -152,7 +188,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
                 target="_blank"
                 download
               >
-                Download Project Overview
+                weekly submission format
               </Button>
             )}
           </Typography>
@@ -192,10 +228,65 @@ const ProjectDashboard = ({ project_id, student_id }) => {
             </Button>
           </form>
         </Paper>
+
+
+{/* //Final submission */}
+ 
+  <Paper sx={{ padding: "1rem" }} elevation={3}>
+      <Typography variant="h5" gutterBottom>
+        Final Project Submission<br></br>
+        {project.final_format && (
+          <Button
+            variant="contained"
+            color="primary"
+            href={project.final_format}
+            target="_blank"
+            download
+          >
+             Final Report submission format
+          </Button>
+        )}
+      </Typography>
+      {!isSubmissionOpen ? (
+        <Typography variant="body1" color="error">
+          Submissions are not open yet. You can submit your final project after {endDate.toDateString()}.
+        </Typography>
+      ) : (
+       
+       
+        <form onSubmit={handleFinalSubmission}>
+           
+            <Typography variant="body1" gutterBottom>
+              Upload Submission File:
+            </Typography>
+            <input
+              type="file"
+              onChange={(e) => setFile(e.target.files[0])}
+              required
+              style={{ marginBottom: "1rem" }}
+            />
+            <TextareaAutosize
+              minRows={3}
+              placeholder="Submission Comments"
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+              style={{
+                width: "100%",
+                marginBottom: "1rem",
+                padding: "0.5rem",
+                fontSize: "1rem",
+              }}
+            />
+            <Button type="submit" variant="contained" color="success">
+              Submit
+            </Button>
+          </form>
+      )}
+</Paper>
       </Box>
     </div>
-
-  )
-};
+            
+  );
+}
 
 export default ProjectDashboard;
