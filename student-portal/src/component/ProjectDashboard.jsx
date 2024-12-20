@@ -27,7 +27,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [projectData, setProjectData] = useState({});
 
   const [error, setError] = useState('');
-  const[sucess,setSucess]=useState('')
+  const [sucess,setSucess]=useState('')
   const [week, setWeek] = useState("");
 
   const [submissionFile, setSubmissionFile] = useState(null);

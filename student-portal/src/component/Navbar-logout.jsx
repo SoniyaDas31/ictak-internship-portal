@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { listContext } from '../App';
 
-const Navbar = () => {
+const Navbar2 = () => {
     const { student_id, setstudent_id } = useContext(listContext);
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -48,9 +48,9 @@ const Navbar = () => {
                             </ul>
                             <form className="form-inline my-2 my-lg-0">
                                
-                                   {/* <button className="btn btn-outline-primary my-2 my-sm-0 me-4" type="button" onClick={() => handleLogin()}>Log In</button> */}
-                                
-                                    <button className="btn btn-outline-danger my-2 my-sm-0" type="button" onClick={() => handleLogout()}>Log Out</button>
+                                   <button className="btn btn-outline-primary my-2 my-sm-0 me-4" type="button" onClick={() => handleLogin()}>Log In</button>
+{/*                                 
+                                    <button className="btn btn-outline-danger my-2 my-sm-0" type="button" onClick={() => handleLogout()}>Log Out</button> */}
                                
                             </form>
 
@@ -64,4 +64,4 @@ const Navbar = () => {
 };
 
 
-export default Navbar;
+export default Navbar2;

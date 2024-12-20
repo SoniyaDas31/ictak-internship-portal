@@ -1,20 +1,20 @@
-import React from 'react'
-    import Navbar from './Navbar'
-    // import ./App.css
+import React from 'react';
+import Navbar2 from './Navbar-logout';
+// import ./App.css
 
 const Home = () => {
   return (
     <>
-         
-            
-                
-                   <Navbar></Navbar>
-                
-                 
 
-    <div className="App">
-      <header className="hero">
-        {/* <nav className="navbar">
+
+
+      <Navbar2></Navbar2>
+
+
+
+      <div className="App">
+        <header className="hero">
+          {/* <nav className="navbar">
           <ul className="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
@@ -26,14 +26,14 @@ const Home = () => {
           <h1>Welcome to My Website</h1>
           <p>Your tagline goes here!</p>
         </div> */}
-      </header>
-    </div>
-  
+        </header>
+      </div>
 
 
 
-           
-        </>
+
+
+    </>
   )
 }
 
