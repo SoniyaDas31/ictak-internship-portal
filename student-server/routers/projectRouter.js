@@ -101,6 +101,87 @@ router.post('/:_id/reference', upload.single('reference_material'), async (req, 
   }
 });
 
+///weekly submission format
+router.post('/:_id/weekly-format', upload.single('weekly_format'), async (req, res) => {
+  try {
+    const { _id } = req.params;
+    // if (!req.file) {
+    //   return res.status(400).json({ message: 'No file uploaded' });
+    // }
+
+    const project = await projectModel.findById(_id);
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+ project.weekly_format=`/uploads/${req.file.filename}`
+   
+    
+    
+   
+
+    await project.save();
+
+    res.status(200).json({ message: 'Files uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading document:', error);
+    res.status(500).json({ message: 'Error uploading document', error });
+  }
+});
+//final format
+
+router.post('/:_id/final-format', upload.single('final_format'), async (req, res) => {
+  try {
+    const { _id } = req.params;
+    // if (!req.file) {
+    //   return res.status(400).json({ message: 'No file uploaded' });
+    // }
+
+    const project = await projectModel.findById(_id);
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+ project.final_format=`/uploads/${req.file.filename}`
+   
+    
+    
+   
+
+    await project.save();
+
+    res.status(200).json({ message: 'Files uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading document:', error);
+    res.status(500).json({ message: 'Error uploading document', error });
+  }
+});
+
+//viva format
+
+router.post('/:_id/viva-format', upload.single('viva_format'), async (req, res) => {
+  try {
+    const { _id } = req.params;
+    // if (!req.file) {
+    //   return res.status(400).json({ message: 'No file uploaded' });
+    // }
+
+    const project = await projectModel.findById(_id);
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+ project.viva_format=`/uploads/${req.file.filename}`
+   
+    
+    
+   
+
+    await project.save();
+
+    res.status(200).json({ message: 'Files uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading document:', error);
+    res.status(500).json({ message: 'Error uploading document', error });
+  }
+});
 
 
 

@@ -7,10 +7,19 @@ const projectSchema=mongoose.Schema({
     description:{type:String,required:true},
     overview_document:{type:String,default:null},
     reference_material:String,
+    internship_end_date:{type:Date},
+    weekly_format:{type:String},
+    final_format:{type:String},
+    viva_format:{type:String},
+    // internship_end_date:{type:Date,required:true},
     
       // weeklysubmission:[weeklysubmissionSchema],
-      enrolled_students: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "Students" } // connect students 
+      enrolled_students: [{
+      student_id:{ type: mongoose.Schema.Types.ObjectId, ref: "Students" }
+
+         // connect students 
+      }
+       
       ],
     created_at: {
         type: Date,
@@ -27,12 +36,12 @@ const projectSchema=mongoose.Schema({
 );
 const projectModel=mongoose.model('projects',projectSchema)
 
-const getCurrentWeek = (created_at) => {
-  const millisecondsInAWeek = 7 * 24 * 60 * 60 * 1000;
-  const now = Date.now();
-  const elapsedTime = now - new Date(created_at).getTime();
-  return Math.ceil(elapsedTime / millisecondsInAWeek);
-};
+// const getCurrentWeek = (created_at) => {
+//   const millisecondsInAWeek = 7 * 24 * 60 * 60 * 1000;
+//   const now = Date.now();
+//   const elapsedTime = now - new Date(created_at).getTime();
+//   return Math.ceil(elapsedTime / millisecondsInAWeek);
+// };
 
 
-module.exports=projectModel,getCurrentWeek;
+module.exports=projectModel;

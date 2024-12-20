@@ -63,10 +63,13 @@ router.post('/:student_id/:project_id/', async (req, res) => {
       student.enrolled_projects.push({
         project_id: `${req.params.project_id.toString()}`,
       });
-
+      project.enrolled_students.push({
+        student_id: `${req.params.student_id.toString()}`,
+      });
       // console.log(student.enrolled_projects);
 
       await student.save();
+      await project.save();
       //res.status(200).send(student.enrolled_projects);
       res.status(200).json({ message: "Project added successfully." });
       console.log('Project added successfully.');
@@ -121,7 +124,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
 
 
       if (existingSubmission) {
-        return res.status(400).json({ error: "Submission for this week already exists." });
+        return res.status(400).json({ error: `Submission for  ${week}st week already exists.` });
       }
 
       // Add the new weekly submission
@@ -140,55 +143,94 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
   }
 );
 
-// router.post("/:student_id/project/:project_id/weekly-submission/submission_url",upload.single('submission_url'),
-// async(req,res)=>{
 
-//   try {
-//     const student = await studentModel.findById(req.params.student_id);
-//     const project = await projectModel.findById(req.params.project_id);
+//Final Submission
+const internshipEndDate = new Date("2024-12-20");
+router.post('/:student_id/project/:project_id/final-submission', upload.single('file_url'), async (req, res) => {
 
-//     if (!student || !project) {
-//       return res.status(404).json({ error: "Student or Project not found." });
-//     }
+  const {comments}=req.body
+ 
+  try {
+    const student = await studentModel.findById(req.params.student_id);
+    const project = await projectModel.findById(req.params.project_id);
 
-//     student.submission_url=`/ uploads / ${ req.file.filename } ` ; 
+    if (!student || !project) {
+      return res.status(404).json({ error: 'Student or Project not found.' });
+    }
 
-
-//     await student.save();
-
-//     res.status(200).json({ message: 'Files uploaded successfully', student });
-//   } catch (error) {
-//     console.error('Error uploading document:', error);
-//     res.status(500).json({ message: 'Error uploading document', error });
-//   }
+    
 
 
+    const currentDate = new Date();
 
-// });
+    // Check if the current date is after the internship end date
+    if (currentDate < internshipEndDate) {
+      return res.status(400).json({
+        error: `Final project submission is not allowed until the end of the internship (Internship end date: ${internshipEndDate}).`
+      });
+    }
+
+    // Find the enrolled project
+    const enrolledProject = student.enrolled_projects.find(
+      (p) => p.project_id.toString() === req.params.project_id
+     
+    );
+    console.log(enrolledProject);
+    if (!enrolledProject) {
+      return res.status(400).json({ error: 'Student is not enrolled in this project.' });
+    }
+
+    // const existingSubmission = enrolledProject.final_submission.find((s)=>s.file_url==
+    //  );
+    // Check if final submission already exists
+    
 
 
-// router.post(
-//   "/upload",
-//   upload.single("submission_url"), // Use .single() for single file upload
-//   async (req, res) => {
-//     try {
-//       console.log(req.file); // Debugging: Check if req.file is defined
-//       const { filename } = req.file; // Access the filename property
-//       res.status(200).json({ message: "File uploaded successfully", filename });
-//     } catch (error) {
-//       console.error("Error uploading document:", error);
-//       res.status(500).send({ error: "Error uploading document" });
-//     }
-//   }
-// );
+    if (enrolledProject.final_submission.file_url) {
+      // if(existingSubmission){
+              return res.status(400).json({ error: 'Final submission already exists.' });
+    }
+
+    // Add the final project submission to the student's project
+    enrolledProject.final_submission = {
+        file_url:`/uploads/${req.file.filename}`,
+        
+      // submissionUrl,
+      comments,
+      isSubmitted:true,
+      submitted_at: Date.now(),
+    };
+    enrolledProject.vivaVoce.isAvailable=true;
+    await student.save();
+
+    res.status(200).json({ message: 'Final project submitted successfully.' });
+  } catch (error) {
+    console.error('Error during final submission:', error);
+    res.status(500).json({ error: 'An error occurred while submitting the final project.' });
+  }
+});
+//viva voca
+
+
+
+
+
 
 
 const getCurrentWeek = (created_at) => {
   const millisecondsInAWeek = 7 * 24 * 60 * 60 * 1000;
   const now = Date.now();
   const elapsedTime = now - new Date(created_at).getTime();
-  return Math.ceil(elapsedTime / millisecondsInAWeek);
+  console.log(elapsedTime);
+ Math.ceil(elapsedTime / millisecondsInAWeek);
+current_week= Math.ceil(elapsedTime / millisecondsInAWeek);
+console.log(current_week)
+return current_week
+  // return Math.ceil(elapsedTime / millisecondsInAWeek);
 };
+
+
+
 
 
 module.exports = router;
