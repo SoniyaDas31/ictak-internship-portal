@@ -37,7 +37,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [submissionComments, setSubmissionComments] = useState("");
 
   const [currentDate, setCurrentDate] = useState(new Date());
-    const [endDate] = useState(new Date("2024-12-22"));//Internship end date
+    const [endDate] = useState(new Date("2024-12-21"));//Internship end date
     const [comments, setComments] = useState("");
     const [file, setFile] = useState(null);
     const isSubmissionOpen = currentDate >= endDate;
@@ -46,6 +46,11 @@ const ProjectDashboard = ({ project_id, student_id }) => {
 const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
 const [newComment, setNewComment] = useState({});
 
+
+const [finalSubmissionStatus, setFinalSubmissionStatus] = useState(false);
+const [vivaFile, setVivaFile] = useState(null);
+const [vivaComments, setVivaComments] = useState("");
+const [responseMessage, setResponseMessage] = useState("");
 
 
   // fetching project details for requested id in the url
@@ -75,7 +80,25 @@ const [newComment, setNewComment] = useState({});
     fetchProjectDetails();
   }, [projectidlocal]);
 
-  //fetching project
+  //checking final submission status
+
+  useEffect(() => {
+    // Fetch the student's project details
+    const fetchFinalProjectDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/students/${student_id}/projects/${projectidlocal}`);
+        const enrolledProject = response.data.enrolled_projects.find(
+          (p) => p.project_id.toString() === projectidlocal
+        );
+        setFinalSubmissionStatus(enrolledProject.final_submission?.isSubmitted);
+      } catch (error) {
+        console.error("Error fetching project details:", error);
+      }
+    };
+    
+    fetchFinalProjectDetails();
+  }, [student_id, projectidlocal]);
+ 
 
   // Fetch discussions for the project
 const fetchDiscussions = async () => {
@@ -195,6 +218,26 @@ const handleFinalSubmission = async (e) => {
       }
       setSucess('')
     } 
+};
+
+//viva voca
+
+const handleVivaSubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("comments", vivaComments);
+  formData.append("file", vivaFile);
+
+  try {
+    const response = await axios.post(
+      `http://localhost:3000/students/${student_id}/projects/${projectidlocal}/viva-voce`,
+      formData
+    );
+    setResponseMessage(response.data.message);
+  } catch (error) {
+    setResponseMessage(error.response?.data?.error || "Submission failed.");
+  }
 };
 
   return (
@@ -344,7 +387,66 @@ const handleFinalSubmission = async (e) => {
           </form>
       )}
 </Paper>
--
+
+
+{/* //viva voca */}
+<Paper sx={{ padding: "1rem",marginTop:"2rem" }} elevation={3}>
+<Typography variant="h5" gutterBottom>
+        Viva Voce Submission<br></br>
+        {project.viva_format && (
+          <Button
+            variant="contained"
+            color="primary"
+            href={project.viva_format}
+            target="_blank"
+            download
+          >
+             Viva voca submission format
+          </Button>
+        )}
+      </Typography>
+      
+      {!finalSubmissionStatus ? (
+        <Typography variant="body1" color="error">
+          You must submit the project report before Viva-Voce.
+        </Typography>
+      ) : (
+        <form onSubmit={handleVivaSubmit}>
+          <TextField
+            type="file"
+            fullWidth
+            onChange={(e) => setVivaFile(e.target.files[0])}
+            sx={{ my: 2 }}
+            required
+          />
+          
+          <TextField
+            label="Comments"
+            multiline
+            rows={4}
+            fullWidth
+            value={vivaComments}
+            onChange={(e) => setVivaComments(e.target.value)}
+            sx={{ my: 2 }}
+          />
+
+          <Button variant="contained" color="primary" type="submit">
+            Submit Viva-Voce
+          </Button>
+        </form>
+      )}
+
+      {responseMessage && (
+        <Typography variant="body2" color="info" sx={{ mt: 2 }}>
+          {responseMessage}
+        </Typography>
+      )}
+
+
+
+</Paper>
+
+{/* //Discussion form */}
 <Paper sx={{ padding: "1rem", marginTop: "2rem" }} elevation={3}>
   <Typography variant="h5" gutterBottom>
     Discussion Forum
