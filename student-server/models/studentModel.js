@@ -27,7 +27,7 @@ const studentSchema = new mongoose.Schema({
       },
       vivaVoce: {
         viva_format:{type: mongoose.Schema.Types.String, ref: "projects.viva_format"},
-        isAvailable: { type: Boolean, default: false }, // Viva Voce link availability
+        isSubmitted: { type: Boolean, default: false }, // Viva Voce link availability
        
           file: { type: String }, // Path to the Viva Voce file
           marks: { type: Number }, // Marks awarded for Viva Voce

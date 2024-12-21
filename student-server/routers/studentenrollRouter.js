@@ -87,6 +87,50 @@ router.post('/:student_id/:project_id/', async (req, res) => {
 });
 
 
+// GET route to fetch student and project details
+router.get('/:student_id/project/:project_id', async (req, res) => {
+  const { student_id, project_id } = req.params;
+
+  try {
+    // Find the student by ID
+    const student = await studentModel.findById(student_id);
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found.' });
+    }
+
+    // Find the project by ID and check if the student is enrolled in this project
+    const project = await projectModel.findById(project_id);
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found.' });
+    }
+
+    // Find the project the student is enrolled in
+    const enrolledProject = student.enrolled_projects.find(
+      (p) => p.project_id.toString() === project_id
+    );
+
+    if (!enrolledProject) {
+      return res.status(400).json({ error: 'Student is not enrolled in this project.' });
+    }
+
+    // Send the student and project details back to the frontend
+    res.status(200).json({
+      student,project
+      // project: {
+      //   project_id: project._id,
+      //   project_name: project.name,
+        // other project details you want to return
+      // },
+      // enrolledProjectDetails: enrolledProject, // Optional: if you want to include specific details about the student's enrollment in the project
+    });
+  } catch (error) {
+    console.error('Error fetching student and project details:', error);
+    res.status(500).json({ error: 'An error occurred while fetching data.' });
+  }
+});
+
+
+
 // POST /students/:studentId/projects/:projectId/weekly-submission
 router.post("/:student_id/project/:project_id/weekly-submission", upload.single('submission_url'),
   async (req, res) => {
@@ -211,6 +255,54 @@ router.post('/:student_id/project/:project_id/final-submission', upload.single('
 });
 //viva voca
 
+
+router.post('/:student_id/project/:project_id/viva-voce', upload.single('file'), async (req, res) => {
+  const { comments } = req.body;
+
+  try {
+    const student = await studentModel.findById(req.params.student_id);
+    const project = await projectModel.findById(req.params.project_id);
+
+    if (!student || !project) {
+      return res.status(404).json({ error: 'Student or Project not found.' });
+    }
+
+    const enrolledProject = student.enrolled_projects.find(
+      (p) => p.project_id.toString() === req.params.project_id
+    );
+
+    if (!enrolledProject) {
+      return res.status(400).json({ error: 'Student is not enrolled in this project.' });
+    }
+
+    // Ensure that the project report has been submitted first
+    if (!enrolledProject.final_submission?.isSubmitted) {
+      return res.status(400).json({
+        error: "Project report must be submitted before Viva-Voce."
+      });
+    }
+
+    // Check if Viva-Voce has already been submitted
+    if (enrolledProject.vivaVoce?.isSubmitted) {
+      return res.status(400).json({ error: 'Viva-Voce already submitted.' });
+    }
+
+    // Add Viva-Voce submission details
+    enrolledProject.vivaVoce = {
+      file: `/uploads/${req.file.filename}`,
+      comments,
+      isSubmitted: true,
+      submitted_at: Date.now(),
+    };
+
+    await student.save();
+
+    res.status(200).json({ message: 'Viva-Voce submission successful.' });
+  } catch (error) {
+    console.error('Error during Viva-Voce submission:', error);
+    res.status(500).json({ error: 'An error occurred during Viva-Voce submission.' });
+  }
+});
 
 
 
