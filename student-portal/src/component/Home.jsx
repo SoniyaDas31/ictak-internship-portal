@@ -48,6 +48,27 @@ const Home = () => {
             ))}
           </div>
         </section>
+        <section className="empowering-section">
+          <h2 className="section-title">Empowering Students for Future Success</h2>
+          <div className="empowering-columns">
+            <div className="empowering-column">
+              <h3>Internship Topics</h3>
+              <p>Choose from a wide range of internship topics to align with your career goals and interests. Our platform provides the resources you need to excel in your chosen topic.</p>
+            </div>
+            <div className="empowering-column">
+              <h3>Progress Tracking</h3>
+              <p>Track your weekly submissions, project reports, and overall progress through our intuitive dashboard. Stay on top of your internship journey with ease.</p>
+            </div>
+            <div className="empowering-column">
+              <h3>Mentor Support</h3>
+              <p>Gain access to experienced mentors who provide guidance, evaluate your projects, and offer valuable feedback to enhance your learning experience.</p>
+            </div>
+          </div>
+        </section>
+
+
+
+    
       </div>
     </>
   );

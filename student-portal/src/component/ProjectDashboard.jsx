@@ -101,6 +101,7 @@ const fetchDiscussions = async () => {
   try {
     const response = await axios.get(`http://localhost:3000/discussions/project/${projectidlocal}`);
     setDiscussions(response.data);
+    console.log(response.data);
   } catch (err) {
     console.error('Error fetching discussions:', err);
     setError('Failed to fetch discussions.');
@@ -129,6 +130,7 @@ const handlePostDiscussion = async (e) => {
 };
 
 
+
 // Post a comment on a discussion
 const handlePostComment = async (discussionId) => {
   try {
@@ -146,7 +148,7 @@ const handlePostComment = async (discussionId) => {
 
 
 //end
-
+console.log(discussions);
   //weekly submission
 
   const handleWeeklySubmission = async (e) => {
@@ -494,24 +496,31 @@ const handleVivaSubmit = async (e) => {
   {discussions.map((discussion) => (
     <Box key={discussion._id} sx={{ marginTop: "1rem" }}>
       <Paper sx={{ padding: "1rem", marginBottom: "1rem" }} elevation={2}>
-        <Typography variant="h6">{discussion.title}</Typography>
-        <Typography variant="body2">{discussion.content}</Typography>
+        <Typography variant="h6">{discussion.comment}</Typography>
+        <Typography variant="body2"> comment by  :{discussion.student_id.name}</Typography>
+        <Typography variant="body2">Date : 
+  {new Date(discussion.updated_at).toLocaleString()}
+</Typography>
+
+
 
         {/* Comments */}
-        {discussion && discussion.comments && discussion.comments.length > 0 ? (
+        {discussion.comments && discussion.comments.length > 0 ? (
   <List>
     {discussion.comments.map((comment, index) => (
       <ListItem key={index}>
-        <ListItemText 
-          primary={comment.comment} 
-          secondary={`By: ${comment.user.name}`} 
-        />
+        <ListItemText
+  primary={comment.comment}
+  secondary={comment.user ? `By: ${comment.author}` : 'By: Anonymous'}
+/>
+
       </ListItem>
     ))}
   </List>
 ) : (
-  <Typography>No comments available</Typography>
+  <Typography></Typography>
 )}
+
 
 
 
