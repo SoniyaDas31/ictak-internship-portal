@@ -8,8 +8,11 @@ import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './component/Home';
+import ErrorBoundary from './component/ErrorBoundary';
 
 const listContext = createContext();
+
+
 
 const App = () => {
 
@@ -32,6 +35,7 @@ const App = () => {
           <Route path='/projects/' element={<ProjectDashboard project_id={projectidlocal} student_id={studentidlocal} />}></Route>
           <Route path='/login' element={<LoginStud/>}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
+          <Route path="/project-dashboard" element={<ProjectDashboard />} />
         </Routes>
       </Router>
       </listContext.Provider>

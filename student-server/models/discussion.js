@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const discussionSchema = new mongoose.Schema({
@@ -9,13 +8,22 @@ const discussionSchema = new mongoose.Schema({
   },
   student_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student',
+    ref: 'Students',
     required: true,
   },
   comment: {
     type: String,
     required: true,
   },
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Students',
+      },
+      comment: String,
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now,

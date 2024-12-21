@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
 import axios from 'axios';
-import { Alert, Box, Button, CircularProgress, List, Paper, TextareaAutosize, TextField, Typography } from '@mui/material';
-
-// import { Alert, Box, Button, Paper, TextField, Typography, List, ListItem, ListItemText, TextareaAutosize } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, List, ListItem, ListItemText, Paper, TextareaAutosize, TextField, Typography } from '@mui/material';
 
 
 
@@ -16,6 +14,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   // console.log(id);
 
   const projectidlocal = localStorage.getItem('projectid');
+  
   
   const session = localStorage.getItem('session');
   if(session===false){
@@ -98,9 +97,8 @@ const handlePostDiscussion = async (e) => {
   e.preventDefault();
   try {
     await axios.post(`http://localhost:3000/discussions/project/${projectidlocal}`, {
-      user: student_id, // Replace with actual user ID
-      title: newDiscussion.title,
-      content: newDiscussion.content,
+      student_id, // Use actual student ID
+      comment: newDiscussion.content, // Backend expects 'comment'
     });
     fetchDiscussions();
     setNewDiscussion({ title: '', content: '' });
@@ -109,6 +107,7 @@ const handlePostDiscussion = async (e) => {
     setError('Failed to post discussion.');
   }
 };
+
 
 // Post a comment on a discussion
 const handlePostComment = async (discussionId) => {
@@ -124,6 +123,7 @@ const handlePostComment = async (discussionId) => {
     setError('Failed to post comment.');
   }
 };
+
 
 //end
 
@@ -385,13 +385,22 @@ const handleFinalSubmission = async (e) => {
         <Typography variant="body2">{discussion.content}</Typography>
 
         {/* Comments */}
-        <List>
-          {discussion.comments.map((comment, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={comment.comment} secondary={`By: ${comment.user.name}`} />
-            </ListItem>
-          ))}
-        </List>
+        {discussion && discussion.comments && discussion.comments.length > 0 ? (
+  <List>
+    {discussion.comments.map((comment, index) => (
+      <ListItem key={index}>
+        <ListItemText 
+          primary={comment.comment} 
+          secondary={`By: ${comment.user.name}`} 
+        />
+      </ListItem>
+    ))}
+  </List>
+) : (
+  <Typography>No comments available</Typography>
+)}
+
+
 
         {/* Add a Comment */}
         <TextField

@@ -1,15 +1,20 @@
-// Add this file: routes/discussionRoutes.js
 const express = require('express');
 const router = express.Router();
 const Discussion = require('../models/discussion');
+//const Discussion = mongoose.model('Discussion');
 
 // Create a new discussion
-router.post('/', async (req, res) => {
+router.post('/project/:projectId', async (req, res) => {
   try {
-    const { project_id, student_id, comment } = req.body;
+    const { projectId } = req.params;
+    const { student_id, comment } = req.body;
+    console.log(projectId);
+    console.log(req.body);
+
+
 
     const newDiscussion = new Discussion({
-      project_id,
+      project_id: projectId,
       student_id,
       comment,
     });
@@ -24,16 +29,35 @@ router.post('/', async (req, res) => {
 // Get discussions by project ID
 router.get('/project/:projectId', async (req, res) => {
   try {
-    const { projectId } = req.params;
-
-    const discussions = await Discussion.find({ project_id: projectId })
-      .populate('student_id', 'name') // Fetch student name for display
-      .sort({ created_at: -1 });
-
+    const projectId = req.params.projectId.trim(); // Remove any extra spaces or newline characters
+    const discussions = await Discussion.find({ project_id: projectId }).populate('student_id', 'name');
     res.status(200).json(discussions);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Add a comment to an existing discussion
+router.post('/:discussionId/comments', async (req, res) => {
+  try {
+    const { discussionId } = req.params;
+    const { user, comment } = req.body;
+
+    const discussion = await Discussion.findById(discussionId);
+    if (!discussion) {
+      return res.status(404).json({ error: 'Discussion not found' });
+    }
+
+    discussion.comments.push({ user, comment });
+    await discussion.save();
+
+    res.status(201).json(discussion);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 module.exports = router;
