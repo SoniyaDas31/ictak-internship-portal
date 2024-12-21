@@ -94,6 +94,10 @@
   background-color: #218838;
 }
 
+.navbar-expand-lg .navbar-collapse{
+  justify-content: space-between;
+}
+
 /* Empowering Section */
 .empowering-section {
   padding: 40px 20px;
