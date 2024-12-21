@@ -64,13 +64,13 @@ router.post('/:student_id/:project_id/', async (req, res) => {
       student.enrolled_projects.push({
         project_id: `${req.params.project_id.toString()}`,
       });
-      // project.enrolled_students.push({
-      //   student_id: `${req.params.student_id.toString()}`,
-      // });
+      project.enrolled_students.push({
+        student_id: `${req.params.student_id.toString()}`,
+      });
       // console.log(student.enrolled_projects);
 
       await student.save();
-      // await project.save();
+      await project.save();
       //res.status(200).send(student.enrolled_projects);
       res.status(200).json({ message: "Project added successfully." });
       console.log('Project added successfully.');
