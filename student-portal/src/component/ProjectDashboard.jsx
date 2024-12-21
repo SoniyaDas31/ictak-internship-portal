@@ -47,10 +47,11 @@ const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
 const [newComment, setNewComment] = useState({});
 
 
-const [finalSubmissionStatus, setFinalSubmissionStatus] = useState(false);
+const [isVivaAvailable, setIsVivaAvailable] = useState(false);
+const [message, setMessage] = useState("");
 const [vivaFile, setVivaFile] = useState(null);
 const [vivaComments, setVivaComments] = useState("");
-const [responseMessage, setResponseMessage] = useState("");
+
 
 
   // fetching project details for requested id in the url
@@ -80,25 +81,21 @@ const [responseMessage, setResponseMessage] = useState("");
     fetchProjectDetails();
   }, [projectidlocal]);
 
-  //checking final submission status
-
   useEffect(() => {
-    // Fetch the student's project details
-    const fetchFinalProjectDetails = async () => {
+    const checkVivaAvailability = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/students/${student_id}/projects/${projectidlocal}`);
-        const enrolledProject = response.data.enrolled_projects.find(
-          (p) => p.project_id.toString() === projectidlocal
-        );
-        setFinalSubmissionStatus(enrolledProject.final_submission?.isSubmitted);
+        const response = await axios.get(`http://localhost:3000/students/${student_id}/project/${projectidlocal}/viva-voce`);
+        setIsVivaAvailable(response.data.isVivaVoceAvailable);
+        setMessage(response.data.message);
       } catch (error) {
-        console.error("Error fetching project details:", error);
+        setMessage(error.response?.data?.error || "Failed to check Viva Voce status.");
       }
     };
-    
-    fetchFinalProjectDetails();
+
+    checkVivaAvailability();
   }, [student_id, projectidlocal]);
- 
+
+  
 
   // Fetch discussions for the project
 const fetchDiscussions = async () => {
@@ -231,13 +228,27 @@ const handleVivaSubmit = async (e) => {
 
   try {
     const response = await axios.post(
-      `http://localhost:3000/students/${student_id}/projects/${projectidlocal}/viva-voce`,
-      formData
+      `http://localhost:3000/students/${student_id}/project/${projectidlocal}/viva-voce`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
-    setResponseMessage(response.data.message);
-  } catch (error) {
-    setResponseMessage(error.response?.data?.error || "Submission failed.");
-  }
+ 
+      setVivaFile(null);
+      setVivaComments("");
+      setSucess(response.data.message||"Viva voce added successfully");
+      setError('')
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error || 'An error occurred during submission.');
+      } else {
+        setError('Unable to connect to the server.');
+      }
+      setSucess('')
+    } 
 };
 
   return (
@@ -406,7 +417,7 @@ const handleVivaSubmit = async (e) => {
         )}
       </Typography>
       
-      {!finalSubmissionStatus ? (
+      {!isVivaAvailable ? (
         <Typography variant="body1" color="error">
           You must submit the project report before Viva-Voce.
         </Typography>
@@ -436,11 +447,11 @@ const handleVivaSubmit = async (e) => {
         </form>
       )}
 
-      {responseMessage && (
+      {/* {responseMessage && (
         <Typography variant="body2" color="info" sx={{ mt: 2 }}>
           {responseMessage}
         </Typography>
-      )}
+      )} */}
 
 
 
