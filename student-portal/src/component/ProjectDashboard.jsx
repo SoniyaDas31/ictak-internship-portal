@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
 import axios from 'axios';
-import { Alert, Box, Button, CircularProgress, Paper, TextareaAutosize, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, List, Paper, TextareaAutosize, TextField, Typography } from '@mui/material';
+
+// import { Alert, Box, Button, Paper, TextField, Typography, List, ListItem, ListItemText, TextareaAutosize } from '@mui/material';
+
 
 
 const ProjectDashboard = ({ project_id, student_id }) => {
@@ -39,6 +42,11 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     const [file, setFile] = useState(null);
     const isSubmissionOpen = currentDate >= endDate;
 
+    const [discussions, setDiscussions] = useState([]);
+const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
+const [newComment, setNewComment] = useState({});
+
+
 
   // fetching project details for requested id in the url
   useEffect(() => {
@@ -66,6 +74,59 @@ const ProjectDashboard = ({ project_id, student_id }) => {
 
     fetchProjectDetails();
   }, [projectidlocal]);
+
+  //fetching project
+
+  // Fetch discussions for the project
+const fetchDiscussions = async () => {
+  try {
+    const response = await axios.get(`http://localhost:3000/discussions/project/${projectidlocal}`);
+    setDiscussions(response.data);
+  } catch (err) {
+    console.error('Error fetching discussions:', err);
+    setError('Failed to fetch discussions.');
+  }
+};
+
+// Fetch discussions on component mount
+useEffect(() => {
+  fetchDiscussions();
+}, []);
+
+// Post a new discussion
+const handlePostDiscussion = async (e) => {
+  e.preventDefault();
+  try {
+    await axios.post(`http://localhost:3000/discussions/project/${projectidlocal}`, {
+      user: student_id, // Replace with actual user ID
+      title: newDiscussion.title,
+      content: newDiscussion.content,
+    });
+    fetchDiscussions();
+    setNewDiscussion({ title: '', content: '' });
+  } catch (err) {
+    console.error('Error posting discussion:', err);
+    setError('Failed to post discussion.');
+  }
+};
+
+// Post a comment on a discussion
+const handlePostComment = async (discussionId) => {
+  try {
+    await axios.post(`http://localhost:3000/discussions/${discussionId}/comments`, {
+      user: student_id, // Replace with actual user ID
+      comment: newComment[discussionId],
+    });
+    fetchDiscussions();
+    setNewComment({ ...newComment, [discussionId]: '' });
+  } catch (err) {
+    console.error('Error posting comment:', err);
+    setError('Failed to post comment.');
+  }
+};
+
+//end
+
   //weekly submission
 
   const handleWeeklySubmission = async (e) => {
@@ -283,6 +344,75 @@ const handleFinalSubmission = async (e) => {
           </form>
       )}
 </Paper>
+-
+<Paper sx={{ padding: "1rem", marginTop: "2rem" }} elevation={3}>
+  <Typography variant="h5" gutterBottom>
+    Discussion Forum
+  </Typography>
+
+  {/* Post a New Discussion */}
+  <form onSubmit={handlePostDiscussion}>
+    <TextField
+      label="Title"
+      value={newDiscussion.title}
+      onChange={(e) => setNewDiscussion({ ...newDiscussion, title: e.target.value })}
+      required
+      fullWidth
+      margin="normal"
+    />
+    <TextareaAutosize
+      minRows={3}
+      placeholder="Content"
+      value={newDiscussion.content}
+      onChange={(e) => setNewDiscussion({ ...newDiscussion, content: e.target.value })}
+      style={{
+        width: "100%",
+        marginBottom: "1rem",
+        padding: "0.5rem",
+        fontSize: "1rem",
+      }}
+    />
+    <Button type="submit" variant="contained" color="primary">
+      Post
+    </Button>
+  </form>
+
+  {/* List Discussions */}
+  {discussions.map((discussion) => (
+    <Box key={discussion._id} sx={{ marginTop: "1rem" }}>
+      <Paper sx={{ padding: "1rem", marginBottom: "1rem" }} elevation={2}>
+        <Typography variant="h6">{discussion.title}</Typography>
+        <Typography variant="body2">{discussion.content}</Typography>
+
+        {/* Comments */}
+        <List>
+          {discussion.comments.map((comment, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={comment.comment} secondary={`By: ${comment.user.name}`} />
+            </ListItem>
+          ))}
+        </List>
+
+        {/* Add a Comment */}
+        <TextField
+          label="Add a Comment"
+          value={newComment[discussion._id] || ''}
+          onChange={(e) => setNewComment({ ...newComment, [discussion._id]: e.target.value })}
+          fullWidth
+          margin="normal"
+        />
+        <Button
+          onClick={() => handlePostComment(discussion._id)}
+          variant="contained"
+          color="secondary"
+        >
+          Comment
+        </Button>
+      </Paper>
+    </Box>
+  ))}
+</Paper>
+
       </Box>
     </div>
             

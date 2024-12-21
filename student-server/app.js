@@ -9,6 +9,7 @@ const studentModel = require('./models/studentModel');
 const upload = require('./multer');
 const cors = require('cors');
 const app = express();
+const discussionRoutes = require('./routers/discussionRoutes');
 
 
 
@@ -20,6 +21,7 @@ app.use('/project', projectRouter);
 app.use('/students', studentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/login', loginRouter);
+app.use('/discussions', discussionRoutes);
 mongoose.connect(process.env.mongodb_url).then(() => {
     console.log("connection established");
 })
