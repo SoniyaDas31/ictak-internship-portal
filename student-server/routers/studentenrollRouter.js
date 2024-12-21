@@ -30,6 +30,7 @@ router.get('/:_id', async (req, res) => {
       console.log(`Student with ID ${req.params._id} not found.`);
       res.status(400).send("student not found");
     }
+
     res.status(200).send(student)
   } catch (error) {
     res.status(500).send("error while fetching student details", error);
@@ -85,6 +86,53 @@ router.post('/:student_id/:project_id/', async (req, res) => {
     res.status(500).send("error while fetching student details", error);
   }
 });
+
+//CHECKING VIVA LINK AVAILABLE
+
+router.get('/:student_id/project/:project_id/viva-voce', async (req, res) => {
+  const { student_id, project_id } = req.params;
+
+  try {
+    // Find the student by ID
+    const student = await studentModel.findById(student_id);
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found.' });
+    }
+
+    // Check if the project exists
+    const project = await projectModel.findById(project_id);
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found.' });
+    }
+
+    // Check if the student is enrolled in the project
+    const enrolledProject = student.enrolled_projects.find(
+      (p) => p.project_id.toString() === project_id
+    );
+
+    if (!enrolledProject) {
+      return res.status(400).json({ error: 'Student is not enrolled in this project.' });
+    }
+
+    // Check if the project report is submitted
+    const isReportSubmitted = enrolledProject.final_submission && enrolledProject.final_submission.isSubmitted;
+
+    // Determine Viva Voce availability
+    const isVivaVoceAvailable = isReportSubmitted;
+
+    res.status(200).json({
+      isVivaVoceAvailable,
+      message: isVivaVoceAvailable
+        ? 'Viva Voce is available for the student.'
+        : 'Viva Voce is not yet available. Please submit the project report first.',
+    });
+  } catch (error) {
+    console.error('Error checking Viva Voce availability:', error);
+    res.status(500).json({ error: 'An error occurred while checking Viva Voce availability.' });
+  }
+});
+
+
 
 
 // POST /students/:studentId/projects/:projectId/weekly-submission
@@ -145,7 +193,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
 
 
 //Final Submission
-const internshipEndDate = new Date("2024-12-22");
+const internshipEndDate = new Date("2024-12-21");
 router.post('/:student_id/project/:project_id/final-submission', upload.single('file_url'), async (req, res) => {
 
   const {comments}=req.body
@@ -200,7 +248,7 @@ router.post('/:student_id/project/:project_id/final-submission', upload.single('
       isSubmitted:true,
       submitted_at: Date.now(),
     };
-    enrolledProject.vivaVoce.isAvailable=true;
+    // enrolledProject.vivaVoce.isAvailable=true;
     await student.save();
 
     res.status(200).json({ message: 'Final project submitted successfully.' });
@@ -211,6 +259,54 @@ router.post('/:student_id/project/:project_id/final-submission', upload.single('
 });
 //viva voca
 
+
+router.post('/:student_id/project/:project_id/viva-voce', upload.single('file'), async (req, res) => {
+  const { comments } = req.body;
+
+  try {
+    const student = await studentModel.findById(req.params.student_id);
+    const project = await projectModel.findById(req.params.project_id);
+
+    if (!student || !project) {
+      return res.status(404).json({ error: 'Student or Project not found.' });
+    }
+
+    const enrolledProject = student.enrolled_projects.find(
+      (p) => p.project_id.toString() === req.params.project_id
+    );
+
+    if (!enrolledProject) {
+      return res.status(400).json({ error: 'Student is not enrolled in this project.' });
+    }
+
+    // Ensure that the project report has been submitted first
+    if (!enrolledProject.final_submission.isSubmitted) {
+      return res.status(400).json({
+        error: "Project report must be submitted before Viva-Voce."
+      });
+    }
+
+    // Check if Viva-Voce has already been submitted
+    if (enrolledProject.vivaVoce.isSubmitted) {
+      return res.status(400).json({ error: 'Viva-Voce already submitted.' });
+    }
+
+    // Add Viva-Voce submission details
+    enrolledProject.vivaVoce = {
+      file: `/uploads/${req.file.filename}`,
+      comments,
+      isSubmitted: true,
+      submitted_at: Date.now(),
+    };
+
+    await student.save();
+
+    res.status(200).json({ message: 'Viva-Voce submission successful.' });
+  } catch (error) {
+    console.error('Error during Viva-Voce submission:', error);
+    res.status(500).json({ error: 'An error occurred during Viva-Voce submission.' });
+  }
+});
 
 
 

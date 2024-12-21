@@ -36,7 +36,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [submissionComments, setSubmissionComments] = useState("");
 
   const [currentDate, setCurrentDate] = useState(new Date());
-    const [endDate] = useState(new Date("2024-12-22"));//Internship end date
+    const [endDate] = useState(new Date("2024-12-21"));//Internship end date
     const [comments, setComments] = useState("");
     const [file, setFile] = useState(null);
     const isSubmissionOpen = currentDate >= endDate;
@@ -44,6 +44,12 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     const [discussions, setDiscussions] = useState([]);
 const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
 const [newComment, setNewComment] = useState({});
+
+
+const [isVivaAvailable, setIsVivaAvailable] = useState(false);
+const [message, setMessage] = useState("");
+const [vivaFile, setVivaFile] = useState(null);
+const [vivaComments, setVivaComments] = useState("");
 
 
 
@@ -74,7 +80,21 @@ const [newComment, setNewComment] = useState({});
     fetchProjectDetails();
   }, [projectidlocal]);
 
-  //fetching project
+  useEffect(() => {
+    const checkVivaAvailability = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/students/${student_id}/project/${projectidlocal}/viva-voce`);
+        setIsVivaAvailable(response.data.isVivaVoceAvailable);
+        setMessage(response.data.message);
+      } catch (error) {
+        setMessage(error.response?.data?.error || "Failed to check Viva Voce status.");
+      }
+    };
+
+    checkVivaAvailability();
+  }, [student_id, projectidlocal]);
+
+  
 
   // Fetch discussions for the project
 const fetchDiscussions = async () => {
@@ -186,6 +206,40 @@ const handleFinalSubmission = async (e) => {
       setFile(null);
       setComments("");
       setSucess(response.data.message||"Final submission added successfully");
+      setError('')
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error || 'An error occurred during submission.');
+      } else {
+        setError('Unable to connect to the server.');
+      }
+      setSucess('')
+    } 
+};
+
+//viva voca
+
+const handleVivaSubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("comments", vivaComments);
+  formData.append("file", vivaFile);
+
+  try {
+    const response = await axios.post(
+      `http://localhost:3000/students/${student_id}/project/${projectidlocal}/viva-voce`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+ 
+      setVivaFile(null);
+      setVivaComments("");
+      setSucess(response.data.message||"Viva voce added successfully");
       setError('')
     } catch (error) {
       if (error.response) {
@@ -344,7 +398,66 @@ const handleFinalSubmission = async (e) => {
           </form>
       )}
 </Paper>
--
+
+
+{/* //viva voca */}
+<Paper sx={{ padding: "1rem",marginTop:"2rem" }} elevation={3}>
+<Typography variant="h5" gutterBottom>
+        Viva Voce Submission<br></br>
+        {project.viva_format && (
+          <Button
+            variant="contained"
+            color="primary"
+            href={project.viva_format}
+            target="_blank"
+            download
+          >
+             Viva voca submission format
+          </Button>
+        )}
+      </Typography>
+      
+      {!isVivaAvailable ? (
+        <Typography variant="body1" color="error">
+          You must submit the project report before Viva-Voce.
+        </Typography>
+      ) : (
+        <form onSubmit={handleVivaSubmit}>
+          <TextField
+            type="file"
+            fullWidth
+            onChange={(e) => setVivaFile(e.target.files[0])}
+            sx={{ my: 2 }}
+            required
+          />
+          
+          <TextField
+            label="Comments"
+            multiline
+            rows={4}
+            fullWidth
+            value={vivaComments}
+            onChange={(e) => setVivaComments(e.target.value)}
+            sx={{ my: 2 }}
+          />
+
+          <Button variant="contained" color="primary" type="submit">
+            Submit Viva-Voce
+          </Button>
+        </form>
+      )}
+
+      {/* {responseMessage && (
+        <Typography variant="body2" color="info" sx={{ mt: 2 }}>
+          {responseMessage}
+        </Typography>
+      )} */}
+
+
+
+</Paper>
+
+{/* //Discussion form */}
 <Paper sx={{ padding: "1rem", marginTop: "2rem" }} elevation={3}>
   <Typography variant="h5" gutterBottom>
     Discussion Forum
