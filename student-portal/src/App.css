@@ -93,3 +93,7 @@
 .enroll-button:hover {
   background-color: #218838;
 }
+
+.navbar-expand-lg .navbar-collapse{
+  justify-content: space-between;
+}
