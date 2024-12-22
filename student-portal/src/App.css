@@ -140,6 +140,10 @@
 
 .modal.open{
   display: block !important;
-  background: rgba(0, 0, 0, 0.5
+  background: rgba(0, 0, 0, 0.5);
 }
 
+.modal .close{
+  position: absolute;
+  right: 20px;
+}
