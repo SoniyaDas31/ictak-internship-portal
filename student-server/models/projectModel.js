@@ -30,12 +30,12 @@ const projectSchema=mongoose.Schema({
         type: Date,
         default: Date.now, // Automatically updates whenever the document is modified
       },
-      internship_end_date: {
-        type: Date,
-        default: function () {
-            return new Date(this.created_at.getTime() + 50 * 24 * 60 * 60 * 1000); // 50 days in milliseconds
-        }
-    },
+    //   internship_end_date: {
+    //     type: Date,
+    //     default: function () {
+    //         return new Date(this.created_at.getTime() + 50 * 24 * 60 * 60 * 1000); // 50 days in milliseconds
+    //     }
+    // },
     },
 //     { timestamps: true 
    
