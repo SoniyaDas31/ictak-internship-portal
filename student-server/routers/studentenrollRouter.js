@@ -193,7 +193,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
 
 
 //Final Submission
-const internshipEndDate = new Date("2024-12-24");
+// const internshipEndDate = new Date("2024-12-24");
 router.post('/:student_id/project/:project_id/final-submission', upload.single('file_url'), async (req, res) => {
 
   const {comments}=req.body
@@ -201,7 +201,7 @@ router.post('/:student_id/project/:project_id/final-submission', upload.single('
   try {
     const student = await studentModel.findById(req.params.student_id);
     const project = await projectModel.findById(req.params.project_id);
-// console.log(project.internship_end_date)
+console.log(project.internship_end_date)
     if (!student || !project) {
       return res.status(404).json({ error: 'Student or Project not found.' });
     }
@@ -212,9 +212,9 @@ router.post('/:student_id/project/:project_id/final-submission', upload.single('
     const currentDate = new Date();
 
     // Check if the current date is after the internship end date
-    if (currentDate < internshipEndDate) {
+    if (currentDate < project.internship_end_date) {
       return res.status(400).json({
-        error: `Final project submission is not allowed until the end of the internship (Internship end date: ${internshipEndDate}).`
+        error: `Final project submission is not allowed until the end of the internship (Internship end date: ${project.internship_end_date}).`
       });
     }
 
