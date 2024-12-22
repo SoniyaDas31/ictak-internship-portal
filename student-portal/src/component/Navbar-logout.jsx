@@ -24,9 +24,7 @@ const Navbar2 = () => {
 
 
     return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-12">
+        
                     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light m-0">
                         <NavLink to="/" className="navbar-brand">ICTAK Student Portal</NavLink>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,9 +55,7 @@ const Navbar2 = () => {
 
                         </div>
                     </nav>
-                </div>
-            </div>
-        </div>
+               
     );
 };
 

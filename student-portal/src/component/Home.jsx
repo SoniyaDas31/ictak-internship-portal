@@ -24,6 +24,7 @@ const courses = [
 const Home = () => {
   return (
     <>
+    
       <Navbar2 />
 
       <div className="App">
@@ -31,8 +32,8 @@ const Home = () => {
           <h1 className="hero-title">Welcome to ICTAK Student Portal</h1>
           <p className="hero-subtitle">ICTAK Student Portal is an innovative platform designed to empower students to take charge of their internship experience. Scroll down to explore our unique features and start your journey.</p>
           <button className="hero-button">
-  <Link to="/signup" style={{ textDecoration: 'none', color: 'white' }}>Register Now</Link>
-</button>
+            <Link to="/signup" style={{ textDecoration: 'none', color: 'white' }}>Register Now</Link>
+          </button>
         </header>
 
         <section className="course-section">
@@ -68,8 +69,9 @@ const Home = () => {
 
 
 
-    
+
       </div>
+      
     </>
   );
 };
