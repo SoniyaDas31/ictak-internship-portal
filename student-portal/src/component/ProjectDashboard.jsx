@@ -36,11 +36,17 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [submissionComments, setSubmissionComments] = useState("");
 
   const [currentDate, setCurrentDate] = useState(new Date());
-    const [endDate] = useState(new Date("2024-12-21"));//Internship end date
+    // const [endDate] = useState(new Date("2024-12-24"));//Internship end date
+     const [endDate,setEndDate] = useState("");//Internship end date
     const [comments, setComments] = useState("");
     const [file, setFile] = useState(null);
-    const isSubmissionOpen = currentDate >= endDate;
-
+    const isSubmissionOpen = currentDate >= new Date(endDate);
+    // const isSubmissionOpen =  (endDate) => {
+    //   const currentDate = new Date();
+    //    if( currentDate >= new Date(endDate));
+    //  return
+    // };
+    console.log(isSubmissionOpen);
     const [discussions, setDiscussions] = useState([]);
 const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
 const [newComment, setNewComment] = useState({});
@@ -60,9 +66,11 @@ const [vivaComments, setVivaComments] = useState("");
         const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
         setProject(response.data);
         setProjectData(response.data);
-        console.log(response.data);
-        console.log(projectData);
-        console.log(project);
+        setEndDate(response.data.internship_end_date);
+        // console.log(response.data);
+        // console.log(response.data.internship_end_date)
+        // console.log(projectData);
+        // console.log(project);
         setSucess(response.data.message||"Project details fetched successfully")
         setError('')
       } catch (error) {
@@ -364,11 +372,11 @@ const handleVivaSubmit = async (e) => {
       </Typography>
       {!isSubmissionOpen ? (
         <Typography variant="body1" color="error">
-          Submissions are not open yet. You can submit your final project after {endDate.toDateString()}.
+          {/* Submissions are not open yet. You can submit your final project after {endDate.toDateString()}. */}
+            Submissions are not open yet. You can submit your final project after {endDate}.
         </Typography>
       ) : (
-       
-       
+     
         <form onSubmit={handleFinalSubmission}>
            
             <Typography variant="body1" gutterBottom>
