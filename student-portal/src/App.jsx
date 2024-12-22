@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import Navbar from './component/Navbar';
+import ErrorPage from './component/404page';
 import LoginStud from './component/Login';
 import Signup from './component/Signup';
 import StudentDashboard from './component/StudentDashboard';
@@ -30,6 +31,7 @@ const App = () => {
     <listContext.Provider value={{student_id, setstudent_id}}>
       <Router>
         <Routes>
+          <Route path='/*' element={<ErrorPage/>} />
           <Route path='/' element={<Home />}></Route>
           <Route path='/dashboard' element={<StudentDashboard student_id={studentidlocal} />}></Route>
           <Route path='/projects/' element={<ProjectDashboard project_id={projectidlocal} student_id={studentidlocal} />}></Route>
