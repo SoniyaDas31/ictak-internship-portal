@@ -511,7 +511,7 @@ const handleVivaSubmit = async (e) => {
       <ListItem key={index}>
         <ListItemText
   primary={comment.comment}
-  secondary={comment.user ? `By: ${comment.author}` : 'By: Anonymous'}
+  secondary={comment.user.name ? `By: ${comment.user}` : 'By: Anonymous'}
 />
 
       </ListItem>
