@@ -76,9 +76,10 @@ const LoginStud = () => {
     return (
         <>
          <Navbar2 />
+        
         <div className="container-fluid">
             <div className="row mt-4 justify-content-center">
-                <div className="col-8">
+                <div className="col-6">
                     <div className="card">
                         <div className="card-header">
                             <h4>Login</h4>
@@ -88,7 +89,7 @@ const LoginStud = () => {
                                 <div className="row row-gap-3">
                                     <div className="col-12">
                                         <label htmlFor="">Email</label>
-                                        <input id="email" name="empEmail" type="email" placeholder="Email" className="form-control" required />
+                                        <input id="email" name="empEmail" type="email" placeholder="Email" className="form-control form-control-user" required />
                                     </div>
                                     <div className="col-12">
                                         <label htmlFor="">Password</label>
@@ -100,6 +101,9 @@ const LoginStud = () => {
                                         <button className="btn btn-primary" type="submit">Login</button>
 
                                     </div>
+                                </div>
+                                <div className='row mt-4'>
+                                <a href={'/signup'} style={{ color: 'darkblue' }}>Not Registered? Please click here to register</a>
                                 </div>
                                 <div className='row mt-4'>
                                     {loginError ? (
