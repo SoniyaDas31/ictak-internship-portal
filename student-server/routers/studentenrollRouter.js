@@ -193,7 +193,7 @@ router.post("/:student_id/project/:project_id/weekly-submission", upload.single(
 
 
 //Final Submission
-const internshipEndDate = new Date("2024-12-21");
+const internshipEndDate = new Date("2024-12-23");
 router.post('/:student_id/project/:project_id/final-submission', upload.single('file_url'), async (req, res) => {
 
   const {comments}=req.body
