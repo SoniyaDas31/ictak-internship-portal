@@ -269,9 +269,8 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     <div>
       <Navbar></Navbar>
       <Box sx={{ padding: "1rem" }}>
-        <Typography variant="h4" gutterBottom>
-          Project Dashboard
-        </Typography>
+
+        <h4 className="mb-4">Project Dashboard</h4>
 
         {error && <Alert severity="error">{error}</Alert>}
         {sucess && <Alert severity="success">{sucess}</Alert>}
@@ -492,91 +491,112 @@ const ProjectDashboard = ({ project_id, student_id }) => {
           </div>
         </div>
 
+  {/* //Discussion form */}
+        <div className="card shadow mb-4 mt-4">
+          <a href="#collapseCardExample" className="d-block card-header py-3" data-toggle="collapse"
+            role="button" aria-expanded="true" aria-controls="collapseCardExample">
+            <h6 className="m-0 font-weight-bold text-primary">Discussion Forum</h6>
+          </a>
+          <div className="collapse show  p-3" id="collapseCardExample">
+            <div classNames="card-body">
+              <Typography variant="h5" gutterBottom>
+                {/* Discussion Forum */}
+              </Typography>
 
-
-
-
-
-
-        {/* //Discussion form */}
-        <Paper sx={{ padding: "1rem", marginTop: "2rem" }} elevation={3}>
-          <Typography variant="h5" gutterBottom>
-            Discussion Forum
-          </Typography>
-
-          {/* Post a New Discussion */}
-          <form onSubmit={handlePostDiscussion}>
-            <TextField
-              label="Title"
-              value={newDiscussion.title}
-              onChange={(e) => setNewDiscussion({ ...newDiscussion, title: e.target.value })}
-              required
-              fullWidth
-              margin="normal"
-            />
-            <TextareaAutosize
-              minRows={3}
-              placeholder="Content"
-              value={newDiscussion.content}
-              onChange={(e) => setNewDiscussion({ ...newDiscussion, content: e.target.value })}
-              style={{
-                width: "100%",
-                marginBottom: "1rem",
-                padding: "0.5rem",
-                fontSize: "1rem",
-              }}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Post
-            </Button>
-          </form>
-
-          {/* List Discussions */}
-          {discussions.map((discussion) => (
-            <Box key={discussion._id} sx={{ marginTop: "1rem" }}>
-              <Paper sx={{ padding: "1rem", marginBottom: "1rem" }} elevation={2}>
-                <Typography variant="h6">{discussion.comment}</Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Posted by: {discussion.student_id?.name || 'Unknown'}
-                </Typography>
-                <Typography variant="body2">Date :
-                  {new Date(discussion.updated_at).toLocaleString()}
-                </Typography>
-                {/* List Comments */}
-                <List>
-                  {discussion.comments.map((comment) => (
-                    <ListItem key={comment._id}>
-                      <ListItemText
-                        primary={comment.comment}
-                        secondary={`Commented by: ${comment.user?.name || 'Anonymous'}`}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-
-
-
-                {/* Add Comment */}
+              {/* Post a New Discussion */}
+              <form onSubmit={handlePostDiscussion}>
+               <div className='h5'>Post Comment</div>
                 <TextField
-                  label="Add a comment"
-                  value={newComment[discussion._id] || ''}
-                  onChange={(e) =>
-                    setNewComment({ ...newComment, [discussion._id]: e.target.value })
-                  }
+                  label="Title"
+                  value={newDiscussion.title}
+                  onChange={(e) => setNewDiscussion({ ...newDiscussion, title: e.target.value })}
+                  required
                   fullWidth
                   margin="normal"
                 />
-                <Button
-                  onClick={() => handlePostComment(discussion._id)}
-                  variant="contained"
-                  color="primary"
-                >
-                  Comment
+                <TextareaAutosize
+                  minRows={3}
+                  placeholder="Content"
+                  value={newDiscussion.content}
+                  onChange={(e) => setNewDiscussion({ ...newDiscussion, content: e.target.value })}
+                  style={{
+                    width: "100%",
+                    marginBottom: "1rem",
+                    padding: "0.5rem",
+                    fontSize: "1rem",
+                  }}
+                />
+                <Button type="submit" variant="contained" color="primary">
+                  Post
                 </Button>
-              </Paper>
-            </Box>
-          ))}
-        </Paper>
+              </form>
+
+              
+              {/* List Discussions */}
+              {discussions.map((discussion) => (
+                <Box key={discussion._id} sx={{ marginTop: "1rem" }}>
+                  <div className='border-bottom-primary pb-5 mb-5'>
+                    <div className="card shadow mb-4 border-left-primary">
+                      <div className="card-body">
+                        <div className='h5'>{discussion.comment}</div>
+                      </div>
+                      <div className="card-header py-2">
+                        <h6 className="m-0 font-weight-bold text-primary"></h6>
+                        <p className='m-0 '></p>Posted By: {discussion.student_id?.name || 'Unknown'}
+                        <p className="small">Posted On: {new Date(discussion.updated_at).toLocaleString()}</p>
+                      </div>
+                    </div>
+
+                    {/* List Comments */}
+                    {discussion.comments.map((comment) => (
+                    <div className="card shadow mb-4 ml-5 border-left-secondary">
+                      <div className="card-body">
+                        <div className='h6'>{comment.comment}</div>
+                      </div>
+                      <div className="card-header py-2">
+                        <h6 className="m-0 font-weight-bold text-primary"></h6>
+                        <p className='m-0 small'></p>Posted By: {`${comment.user?.name || 'Anonymous'}`}
+                      </div>
+                    </div>
+                    )
+                    )}
+
+
+
+                    {/* Add Comment */}
+                    <TextField
+                      label="Add a comment"
+                      value={newComment[discussion._id] || ''}
+                      onChange={(e) =>
+                        setNewComment({ ...newComment, [discussion._id]: e.target.value })
+                      }
+                      fullWidth
+                      margin="normal"
+                    />
+                    <Button
+                      onClick={() => handlePostComment(discussion._id)}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Comment
+                    </Button>
+                    </div>
+                   
+                </Box>
+              ))}
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+
 
       </Box>
     </div>

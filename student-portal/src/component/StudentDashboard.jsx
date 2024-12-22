@@ -178,7 +178,7 @@ const StudentDashboard = ({ student_id }) => {
             <div className="container-fluid">
                 <div className="row mt-4 justify-content-center">
                     <div className="col-12">
-                        <h4>Student Dashboard</h4>
+                        <h4 className="mb-4">Student Dashboard</h4>
                         <div className="card">
                             <div className="card-header">
                                 <h5>Student Info</h5>
