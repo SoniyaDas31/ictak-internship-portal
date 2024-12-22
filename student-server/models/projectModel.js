@@ -7,7 +7,8 @@ const projectSchema=mongoose.Schema({
     description:{type:String,required:true},
     overview_document:{type:String,default:null},
     reference_material:String,
-    internship_end_date:{type:Date},
+    // internship_end_date:{type:Date},
+    
     weekly_format:{type:String},
     final_format:{type:String},
     viva_format:{type:String},
@@ -29,6 +30,12 @@ const projectSchema=mongoose.Schema({
         type: Date,
         default: Date.now, // Automatically updates whenever the document is modified
       },
+      internship_end_date: {
+        type: Date,
+        default: function () {
+            return new Date(this.created_at.getTime() + 50 * 24 * 60 * 60 * 1000); // 50 days in milliseconds
+        }
+    },
     },
 //     { timestamps: true 
    
