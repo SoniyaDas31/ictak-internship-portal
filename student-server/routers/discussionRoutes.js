@@ -29,14 +29,18 @@ router.post('/project/:projectId', async (req, res) => {
 // Get discussions by project ID
 router.get('/project/:projectId', async (req, res) => {
   try {
-    const projectId = req.params.projectId.trim(); // Remove any extra spaces or newline characters
-    const discussions = await Discussion.find({ project_id: projectId }).populate('student_id', 'name');
+    const projectId = req.params.projectId.trim();
+    const discussions = await Discussion.find({ project_id: projectId })
+      .populate('student_id', 'name')
+      .populate('comments.user', 'name'); // Populate the user field in comments
+
     res.status(200).json(discussions);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 // Add a comment to an existing discussion
