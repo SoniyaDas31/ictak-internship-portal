@@ -34,7 +34,7 @@ const StudentDashboard = ({ student_id }) => {
     const formatDate = (dateString) => {
         const options = { year: "numeric", month: "long", day: "numeric" }
         return new Date(dateString).toLocaleDateString(undefined, options)
-    }
+    }   
 
 
     // fetching Project List for Student to select
