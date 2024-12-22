@@ -218,8 +218,8 @@ const StudentDashboard = ({ student_id }) => {
                                             <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
                                                 {selectedProject.description}
                                             </Typography>
-                                            <Typography variant="subtitle2"  sx={{ marginBottom: "1rem" }}>
-                                                Project End Date: &nbsp;{formatDate(selectedProject?.internship_end_date)}
+                                            <Typography variant="subtitle2"  sx={{ marginBottom: "1rem" }} color="error">
+                                                End Date: &nbsp;{formatDate(selectedProject?.internship_end_date)}
                                             </Typography>
                                             {selectedProject.overview_document && (
                                                 <Button

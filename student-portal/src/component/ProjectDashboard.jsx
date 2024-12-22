@@ -58,10 +58,10 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const [vivaComments, setVivaComments] = useState("");
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric"}
+    const options = { year: "numeric", month: "long", day: "numeric" }
     return new Date(dateString).toLocaleDateString(undefined, options)
   }
-  
+
 
   // fetching project details for requested id in the url
   useEffect(() => {
@@ -75,7 +75,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
         // console.log(response.data.internship_end_date)
         // console.log(projectData);
         // console.log(project);
-        setSucess(response.data.message || "Project details fetched successfully")
+        //setSucess(response.data.message || "Project details fetched successfully")
         setError('')
       } catch (error) {
         // console.error("Error fetching project details:", err);
@@ -286,6 +286,9 @@ const ProjectDashboard = ({ project_id, student_id }) => {
             <Typography variant="h5">{project.title}</Typography>
             <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
               {project.description}
+            </Typography>
+            <Typography variant="subtitle2" sx={{ marginBottom: "1rem" }} color="error">
+              End Date: &nbsp;{formatDate(project?.internship_end_date)}
             </Typography>
             {project.overview_document && (
               <Button
