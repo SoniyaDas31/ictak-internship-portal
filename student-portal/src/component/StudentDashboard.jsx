@@ -7,7 +7,7 @@ import { Alert, Box, Button, CircularProgress, Paper, TextareaAutosize, TextFiel
 
 const StudentDashboard = ({ student_id }) => {
 
-    console.log(`Student Id: ${student_id}`);
+    //console.log(`Student Id: ${student_id}`);
     const navigate = useNavigate();
 
     const projectidlocal = localStorage.getItem('projectid');
@@ -28,7 +28,13 @@ const StudentDashboard = ({ student_id }) => {
     const [submissionSuccess, setSubmissionSuccess] = useState("");
 
     const session = localStorage.getItem('session');
-    console.log(`Session is ${session}`);
+    //console.log(`Session is ${session}`);
+
+    // Date Format Function
+    const formatDate = (dateString) => {
+        const options = { year: "numeric", month: "long", day: "numeric" }
+        return new Date(dateString).toLocaleDateString(undefined, options)
+    }
 
 
     // fetching Project List for Student to select
@@ -80,7 +86,7 @@ const StudentDashboard = ({ student_id }) => {
 
     }
 
-    console.log('Project ID', projectidlocal);
+    //console.log('Project ID', projectidlocal);
 
     if (!projectidlocal) {
         console.log("No Project assigned");
@@ -96,10 +102,10 @@ const StudentDashboard = ({ student_id }) => {
             try {
                 const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
                 setSelectedProject(response.data);
-                console.log('ProjectID local in API', projectidlocal);
+                //console.log('ProjectID local in API', projectidlocal);
                 //console.log('Selected Project is :',response.data);
-                console.log('Selected Project Data :', selectedProject);
-                console.log('Is enrolled ? :', enrolled);
+                //console.log('Selected Project Data :', selectedProject);
+                //console.log('Is enrolled ? :', enrolled);
             } catch (err) {
                 console.error("Error fetching project details:", err);
                 setError("Failed to fetch project details.");
@@ -112,12 +118,12 @@ const StudentDashboard = ({ student_id }) => {
     //console.log(projectList);
 
     const handleSelectProject = (id) => {
-        console.log(`Selected project is ${id}`);
+        //console.log(`Selected project is ${id}`);
         localStorage.setItem('projectid', id);
         const project_idlocal = localStorage.getItem('projectid');
-        console.log('Project Id stored', project_idlocal);
+        //console.log('Project Id stored', project_idlocal);
         const postProjectData = async () => {
-            console.log('posting selected project');
+            //console.log('posting selected project');
             try {
                 const response = await axios.post(
                     `http://localhost:3000/students/${student_id}/${project_idlocal}`
@@ -138,14 +144,12 @@ const StudentDashboard = ({ student_id }) => {
         postProjectData();
 
 
-        // navigate(`/projects/`);
-
     }
 
     // Define function that will open the modal
     const handleOpenModal = (projectId) => {
         // setProjectId(projectId);
-        console.log(`Project Id ${projectId}`);
+        //console.log(`Project Id ${projectId}`);
         setProjectId(`${projectId}`);
         setIsModalOpen(true);
         return projectid;
@@ -157,7 +161,7 @@ const StudentDashboard = ({ student_id }) => {
     };
 
     const handleViewDocument = (document_url) => {
-        console.log(`Attachment url : ${document_url}`);
+        //console.log(`Attachment url : ${document_url}`);
         window.open(`http://localhost:3000${document_url}`);
 
     }
@@ -183,12 +187,7 @@ const StudentDashboard = ({ student_id }) => {
 
                                 <form>
                                     <div className="row row-gap-3">
-                                        {/* <div className="col-3">
-                                            <label htmlFor="">Student ID</label>
-                                            <input value={studentData?._id} disabled name="studName" type="text" placeholder="Student ID" className="form-control" />
-                                        </div> */}
                                         <div className="col-3">
-
                                             <label htmlFor="">Student Name</label>
                                             <input value={studentData?.name} disabled name="studName" type="text" placeholder="Name" className="form-control" />
                                         </div>
@@ -215,8 +214,12 @@ const StudentDashboard = ({ student_id }) => {
                                     selectedProject ? (
                                         <Paper sx={{ padding: "1rem", marginBottom: "2rem" }} elevation={3}>
                                             <Typography variant="h5">{selectedProject.title}</Typography>
+                                           
                                             <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
                                                 {selectedProject.description}
+                                            </Typography>
+                                            <Typography variant="subtitle2"  sx={{ marginBottom: "1rem" }}>
+                                                Project End Date: &nbsp;{formatDate(selectedProject?.internship_end_date)}
                                             </Typography>
                                             {selectedProject.overview_document && (
                                                 <Button
@@ -229,16 +232,17 @@ const StudentDashboard = ({ student_id }) => {
                                                 >
                                                     Download Project Overview
                                                 </Button>
-                                                
-                                                
+
+
                                             )} &nbsp;&nbsp;&nbsp;
-                                             <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    href="/projects"
-                                                >
-                                                    View Project
-                                                </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                href="/projects"
+                                            >
+                                                View Project
+                                            </Button>
+                                            
                                         </Paper>
                                     ) : (
                                         <Typography variant="body1" color="error">
@@ -246,12 +250,14 @@ const StudentDashboard = ({ student_id }) => {
                                         </Typography>
                                     )
                                 ) : (
+
                                     <table className="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th scope="col" className="text-center">Project No</th>
                                                 <th scope="col" className="text-center">Project Title</th>
                                                 <th scope="col" className="text-center">Project Description</th>
+                                                <th scope="col" className="text-center">Project End Date</th>
                                                 <th scope="col" className="text-center">Actions</th>
                                             </tr>
                                         </thead>
@@ -262,6 +268,7 @@ const StudentDashboard = ({ student_id }) => {
                                                         <td className="text-center">{index + 1}</td>
                                                         <td className="text-center">{project?.title}</td>
                                                         <td className="text-center">{project?.description}</td>
+                                                        <td className="text-center">{formatDate(project?.internship_end_date)}</td>
                                                         <td className="text-center">
                                                             <button className="btn btn-secondary me-3 pl-2" onClick={() => handleViewDocument(project?.overview_document)}><i className="fa-regular fa-eye pe-2 pointer" ></i> View Attachments </button>
                                                             <button className="btn btn-primary me-3 pl-2" data-toggle="modal" onClick={() => handleOpenModal(project?._id)} data-target="#projectConfirmModal"><i className="fa-regular fa-plus pe-2 pointer" ></i> Select Project </button>
@@ -273,7 +280,10 @@ const StudentDashboard = ({ student_id }) => {
                                             }
                                         </tbody>
                                     </table>
+
                                 )}
+
+
 
                                 <div id="projectConfirmModal" className={`modal ${isModalOpen ? 'open' : ''}`} role="dialog">
                                     <div className="modal-dialog">

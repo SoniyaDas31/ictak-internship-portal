@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { listContext } from '../App';
+import Navbar2 from './Navbar-logout';
 
 const LoginStud = () => {
 
@@ -73,6 +74,8 @@ const LoginStud = () => {
 
 
     return (
+        <>
+         <Navbar2 />
         <div className="container-fluid">
             <div className="row mt-4 justify-content-center">
                 <div className="col-8">
@@ -121,6 +124,8 @@ const LoginStud = () => {
                 </div>
             </div>
         </div>
+        
+        </>
     );
 }
 

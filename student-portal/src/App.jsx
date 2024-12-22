@@ -20,10 +20,10 @@ const App = () => {
   const projectidlocal = localStorage.getItem('projectid');
   const [student_id, setstudent_id] = useState({});
   //const student_id_loggedin = '67576a387de977b31c4991f6';
-  console.log(student_id);
-  console.log(projectidlocal);
-  console.log('Local Storage Student Id', studentidlocal);
-  console.log('Local Storage Project Id', projectidlocal);
+  //console.log(student_id);
+ // console.log(projectidlocal);
+ // console.log('Local Storage Student Id', studentidlocal);
+ // console.log('Local Storage Project Id', projectidlocal);
   
   return (
     <>

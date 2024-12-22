@@ -35,9 +35,9 @@ const Navbar = () => {
 
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav mr-auto mt-2 mt-lg-0 me-4">
-                                {/* <li className="nav-item active">
+                                <li className="nav-item active">
                                     <NavLink to="/" className="nav-link">Home </NavLink>
-                                </li> */}
+                                </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="/dashboard">Dashboard</a>
                                 </li>
