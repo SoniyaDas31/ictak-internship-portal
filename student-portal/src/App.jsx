@@ -34,10 +34,9 @@ const App = () => {
           <Route path='/*' element={<ErrorPage/>} />
           <Route path='/' element={<Home />}></Route>
           <Route path='/dashboard' element={<StudentDashboard student_id={studentidlocal} />}></Route>
-          <Route path='/projects/' element={<ProjectDashboard project_id={projectidlocal} student_id={studentidlocal} />}></Route>
+          <Route path='/projects' element={<ProjectDashboard project_id={projectidlocal} student_id={studentidlocal} />}></Route>
           <Route path='/login' element={<LoginStud/>}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
-          <Route path="/project-dashboard" element={<ProjectDashboard />} />
         </Routes>
       </Router>
       </listContext.Provider>

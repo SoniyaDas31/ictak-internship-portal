@@ -22,7 +22,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   }
   if (!projectidlocal) {
     console.log('project id is blank');
-    navigate('/login');
+    //navigate('/login');
   }
 
   const [project, setProject] = useState([]);
