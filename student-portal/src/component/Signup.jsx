@@ -1,71 +1,108 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Navbar2 from './Navbar-logout';
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Grid, TextField, Typography, Link } from '@mui/material';
 import axios from 'axios';
 
 const Signup = () => {
 
+   const navigate = useNavigate();
+
   const [signupError, setSignupError] = useState(false);
   const [signupComments, setSignupComments] = useState("");
   const [studentData, setStudentData] = useState([]);
+  const [studentMark, setStudentMark] = useState([]);
+  const [formData, setFormData] = useState("");
   const [error, setError] = useState('');
-  
+  const inputHandler = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   // fetching from mongo db student data using id
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get(`https://student-server-94l5.onrender.com/students/`);
-        setStudentData(Array.from(response.data));
+        const response = await axios.get(`https://student-server-94l5.onrender.com/students`);
+        setStudentData(response.data);
         console.log(response.data);
       } catch (err) {
-        console.error("Error fetching project details:", err);
-        setError("Failed to fetch project details.");
+        console.error("Error fetching student details:", err);
+        setError("Failed to fetch student details.");
       }
     };
     fetchStudentData();
   }, []);
+  useEffect(() => {
+    const fetchStudentMark = async () => {
+      try {
+        const response = await axios.get(`https://student-server-94l5.onrender.com/signup/mark`);
+        setStudentMark(response.data);
+        console.log(response.data);
+      } catch (err) {
+        console.error("Error fetching Mark details:", err);
+        setError("Failed to fetch Mark details.");
+      }
+    };
+    fetchStudentMark();
+  }, []);
 
   const formSubmit = async (e) => {
     e.preventDefault();
-    console.log(studentData);
-    let form_email = e.target.elements.email.value;
-    let form_password = e.target.elements.password.value;
+    // let studentExamEmail=studentMark.email
+
+    // console.log(studentMark.email);
+
+    // let form_email = e.target.elements.email.value;
+    // let form_password = e.target.elements.password.value;
+    let form_email = formData.email;
     console.log(form_email);
-    console.log(form_password);
+
+    const examEmailValidation = studentMark.find((mark) => mark.email === form_email);
+    //console.log(examEmailValidation.mark);
+    if (!examEmailValidation) {
+      setSignupComments("Student not attended the exam.")
+    }
+    let exitexam_pass = examEmailValidation.mark > 50;
+    console.log(exitexam_pass)
+    if (!exitexam_pass) {
+      setSignupComments("Minimum passmark is not secured.")
+    }
     const emailValidation = studentData.find((user) => user.email === form_email);
     console.log(emailValidation);
 
     if (!emailValidation) {
       console.log("Student Not Registered");
 
+
+      // if(!studentData.mark>50){}
+
       // Capturing html form data to an objec
-      const formData = new FormData();
-      formData.append("name", e.target.elements.name.value);
-      formData.append("email", e.target.elements.email.value);
-      formData.append("password", e.target.elements.password.value);
-      formData.append("phonenumber", e.target.elements.phone.value);
-      console.log(formData);
-      for (const [key, value] of formData.entries()) {
-          console.log(`${key}: ${value}`);
-      }
+      // const formData = new FormData();
+      // formData.append("name", e.target.elements.name.value);
+      // formData.append("email", e.target.elements.email.value);
+      // formData.append("password", e.target.elements.password.value);
+      // formData.append("phonenumber", e.target.elements.phone.value);
+      // console.log(formData);
+      // for (const [key, value] of formData.entries()) {
+      //     console.log(`${key}: ${value}`);
+      // }
 
       // Api Call to push data to signup student
       try {
         const response = await axios.post(
           'https://student-server-94l5.onrender.com/signup',
           formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
+
         );
 
         console.log(response.data.message || "Student Registered successfully");
-        setSignupComments(response.data.message);
+        setSignupComments("Student Registered successfully, Redirecting to login page...");
+        setTimeout(() => {
+            navigate('/login');
+        }, 3000);
 
-      } catch (error) {
+      }
+      catch (error) {
         if (error.response) {
           setError(error.response.data.error || 'An error occurred during submission.');
           console.log(error.response.data.error);
@@ -76,9 +113,9 @@ const Signup = () => {
         }
 
       }
+    }
 
-
-    } else {
+    else {
       console.log("Student Already Registered, Please Login");
       setSignupComments("Already Registered, Please Login!");
     }
@@ -95,23 +132,23 @@ const Signup = () => {
                 <h4>Register</h4>
               </div>
               <div className="card-body">
-                <form onSubmit={formSubmit} id="signupForm" netlify>
+                <form onSubmit={formSubmit} id="signupForm">
                   <div className="row row-gap-3">
                     <div className="col-12">
                       <label htmlFor="">Name</label>
-                      <input id="name" name="stdName" type="text" placeholder="Full Name" className="form-control form-control-user" required />
+                      <input id="name" name="name" type="text" placeholder="Full Name" onChange={inputHandler} className="form-control form-control-user" required />
                     </div>
                     <div className="col-12">
                       <label htmlFor="">Email</label>
-                      <input id="email" name="stdEmail" type="email" placeholder="Email" className="form-control form-control-user" required />
+                      <input id="email" name="email" type="email" placeholder="Email" onChange={inputHandler} className="form-control form-control-user" required />
                     </div>
                     <div className="col-12">
                       <label htmlFor="">Password</label>
-                      <input id="password" name="empEmail" type="password" placeholder="Password" className="form-control" />
+                      <input id="password" name="password" type="password" placeholder="Password" onChange={inputHandler} className="form-control" />
                     </div>
                     <div className="col-12">
                       <label htmlFor="">Phone</label>
-                      <input id="phone" name="stdPhone" type="text" placeholder="Phone Number" className="form-control form-control-user" required />
+                      <input id="phone" name="phonenumber" type="text" placeholder="Phone Number" onChange={inputHandler} className="form-control form-control-user" required />
                     </div>
 
                   </div>
