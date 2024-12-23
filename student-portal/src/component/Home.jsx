@@ -16,7 +16,7 @@ const courses = [
   },
   {
     title: 'Digital Marketing',
-    description: 'Unlock the secrets of successful online marketing with our comprehensive Digital Marketing course. Master essential skills, including SEO, social media marketing, email campaigns, and analytics. This course empowers you to drive traffic, increase engagement, and grow your brand in the digital space. Perfect for aspiring marketers and business owners alike.',
+    description: 'Unlock the secrets of successful online marketing with our comprehensive Digital Marketing course. Master essential skills, including SEO, social media marketing, email campaigns, and analytics. This course empowers you to drive traffic, increase engagement, and grow your brand in the digital space. Perfect for aspiring marketers and business owners alike..',
     image: '/images/digital.png',
   },
 ];
