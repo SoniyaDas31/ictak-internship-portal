@@ -41,7 +41,7 @@ const StudentDashboard = ({ student_id }) => {
     useEffect(() => {
         const fetchProjectList = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/project/`);
+                const response = await axios.get(`https://student-server-94l5.onrender.com/project/`);
                 setProjectList(Array.from(response.data));
                 //console.log(response.data);
                 //console.log(projectList);
@@ -61,7 +61,7 @@ const StudentDashboard = ({ student_id }) => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/students/${student_id}`);
+                const response = await axios.get(`https://student-server-94l5.onrender.com/students/${student_id}`);
                 setStudentData(response.data);
                 //console.log(response.data);
             } catch (err) {
@@ -100,7 +100,7 @@ const StudentDashboard = ({ student_id }) => {
     useEffect(() => {
         const fetchProjectDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
+                const response = await axios.get(`https://student-server-94l5.onrender.com/project/${projectidlocal}`);
                 setSelectedProject(response.data);
                 console.log('ProjectID local in API', projectidlocal);
                 //console.log('Selected Project is :',response.data);
