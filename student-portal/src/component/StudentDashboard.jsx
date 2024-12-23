@@ -126,7 +126,7 @@ const StudentDashboard = ({ student_id }) => {
             //console.log('posting selected project');
             try {
                 const response = await axios.post(
-                    `http://localhost:3000/students/${student_id}/${project_idlocal}`
+                    `https://student-server-94l5.onrender.com/students/${student_id}/${project_idlocal}`
                 );
 
                 setSubmissionSuccess(response.data.message);
@@ -162,7 +162,7 @@ const StudentDashboard = ({ student_id }) => {
 
     const handleViewDocument = (document_url) => {
         //console.log(`Attachment url : ${document_url}`);
-        window.open(`http://localhost:3000${document_url}`);
+        window.open(`https://student-server-94l5.onrender.com${document_url}`);
 
     }
 

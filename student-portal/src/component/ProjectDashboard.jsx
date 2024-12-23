@@ -173,7 +173,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
     try {
 
       const response = await axios.post(
-        `http://localhost:3000/students/${student_id}/project/${projectidlocal}/weekly-submission`,
+        `https://student-server-94l5.onrender.com/students/${student_id}/project/${projectidlocal}/weekly-submission`,
         formData,
         {
           headers: {
@@ -208,7 +208,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/students/${student_id}/project/${projectidlocal}/final-submission`,
+        `https://student-server-94l5.onrender.com/${student_id}/project/${projectidlocal}/final-submission`,
         formData,
         {
           headers: {
@@ -242,7 +242,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/students/${student_id}/project/${projectidlocal}/viva-voce`,
+        `https://student-server-94l5.onrender.com/${student_id}/project/${projectidlocal}/viva-voce`,
         formData,
         {
           headers: {

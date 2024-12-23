@@ -53,7 +53,7 @@ const Signup = () => {
       // Api Call to push data to signup student
       try {
         const response = await axios.post(
-          'http://localhost:3000/signup',
+          'https://student-server-94l5.onrender.com/signup',
           formData,
           {
             headers: {
