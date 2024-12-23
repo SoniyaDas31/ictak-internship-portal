@@ -7,17 +7,17 @@ const courses = [
   {
     title: 'Full Stack MERN',
     description: 'Master the art of building modern web applications with the MERN stack: MongoDB, Express.js, React, and Node.js. This comprehensive course covers both front-end and back-end development, equipping you with the skills to create dynamic, database-driven web solutions. Ideal for aspiring developers aiming to become proficient in full-stack development.',
-    image: '/images/mern.png',
+    image: 'https://res.cloudinary.com/dt1mlasld/image/upload/v1734966857/mern_ezgzqa.png',
   },
   {
     title: 'Full Stack MEAN',
     description: 'Dive into the world of Full Stack development with the MEAN stack: MongoDB, Express.js, Angular, and Node.js. Learn to build scalable, dynamic web applications using cutting-edge technologies. This course is perfect for those aspiring to excel in both front-end and back-end development, enabling you to create seamless, end-to-end web solutions.',
-    image: '/images/mean.png',
+    image: 'https://res.cloudinary.com/dt1mlasld/image/upload/v1734966858/mean_hubidf.png',
   },
   {
     title: 'Digital Marketing',
     description: 'Unlock the secrets of successful online marketing with our comprehensive Digital Marketing course. Master essential skills, including SEO, social media marketing, email campaigns, and analytics. This course empowers you to drive traffic, increase engagement, and grow your brand in the digital space. Perfect for aspiring marketers and business owners alike..',
-    image: '/images/digital.png',
+    image: 'https://res.cloudinary.com/dt1mlasld/image/upload/v1734966858/digital_wdrwkq.png',
   },
 ];
 
