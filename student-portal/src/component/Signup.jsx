@@ -95,7 +95,7 @@ const Signup = () => {
                 <h4>Register</h4>
               </div>
               <div className="card-body">
-                <form onSubmit={formSubmit} id="signupForm">
+                <form onSubmit={formSubmit} id="signupForm" netlify>
                   <div className="row row-gap-3">
                     <div className="col-12">
                       <label htmlFor="">Name</label>

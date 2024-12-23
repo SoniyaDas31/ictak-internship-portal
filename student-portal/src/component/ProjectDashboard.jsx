@@ -67,7 +67,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
+        const response = await axios.get(`https://student-server-94l5.onrender.com/project/${projectidlocal}`);
         setProject(response.data);
         setProjectData(response.data);
         setEndDate(response.data.internship_end_date);
@@ -95,7 +95,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   useEffect(() => {
     const checkVivaAvailability = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/students/${student_id}/project/${projectidlocal}/viva-voce`);
+        const response = await axios.get(`https://student-server-94l5.onrender.com/students/${student_id}/project/${projectidlocal}/viva-voce`);
         setIsVivaAvailable(response.data.isVivaVoceAvailable);
         setMessage(response.data.message);
       } catch (error) {
@@ -111,7 +111,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   // Fetch discussions for the project
   const fetchDiscussions = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/discussions/project/${projectidlocal}`);
+      const response = await axios.get(`https://student-server-94l5.onrender.com/discussions/project/${projectidlocal}`);
       setDiscussions(response.data);
       console.log(response.data);
     } catch (err) {
@@ -129,7 +129,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   const handlePostDiscussion = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:3000/discussions/project/${projectidlocal}`, {
+      await axios.post(`https://student-server-94l5.onrender.com/discussions/project/${projectidlocal}`, {
         student_id, // Use actual student ID
         comment: newDiscussion.content, // Backend expects 'comment'
       });
@@ -146,7 +146,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
   // Post a comment on a discussion
   const handlePostComment = async (discussionId) => {
     try {
-      await axios.post(`http://localhost:3000/discussions/${discussionId}/comments`, {
+      await axios.post(`https://student-server-94l5.onrender.com/discussions/${discussionId}/comments`, {
         user: student_id, // Replace with actual user ID
         comment: newComment[discussionId],
       });
@@ -307,19 +307,19 @@ const ProjectDashboard = ({ project_id, student_id }) => {
           </Typography>
         )}
 
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="weekly-submission" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab" aria-controls="home" aria-selected="true">Weekly Submission</button>
+        <ul className="nav nav-tabs" id="myTab" role="tablist">
+          <li className="nav-item" role="presentation">
+            <button className="nav-link active" id="weekly-submission" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab" aria-controls="home" aria-selected="true">Weekly Submission</button>
           </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="final-submission" data-bs-toggle="tab" data-bs-target="#final" type="button" role="tab" aria-controls="profile" aria-selected="false">Final Project Submission</button>
+          <li className="nav-item" role="presentation">
+            <button className="nav-link" id="final-submission" data-bs-toggle="tab" data-bs-target="#final" type="button" role="tab" aria-controls="profile" aria-selected="false">Final Project Submission</button>
           </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="viva-submission" data-bs-toggle="tab" data-bs-target="#viva" type="button" role="tab" aria-controls="contact" aria-selected="false">Viva Voce Submission</button>
+          <li className="nav-item" role="presentation">
+            <button className="nav-link" id="viva-submission" data-bs-toggle="tab" data-bs-target="#viva" type="button" role="tab" aria-controls="contact" aria-selected="false">Viva Voce Submission</button>
           </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="weekly" role="tabpanel" aria-labelledby="weekly-tab">
+        <div className="tab-content" id="myTabContent">
+          <div className="tab-pane fade show active" id="weekly" role="tabpanel" aria-labelledby="weekly-tab">
             {/* Weekly Submission Section */}
             <Paper sx={{ padding: "1rem" }} elevation={3}>
               <Typography variant="h5" gutterBottom>
@@ -374,7 +374,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
             </Paper>
 
           </div>
-          <div class="tab-pane fade" id="final" role="tabpanel" aria-labelledby="final-tab">
+          <div className="tab-pane fade" id="final" role="tabpanel" aria-labelledby="final-tab">
             {/* //Final submission */}
 
             <Paper sx={{ padding: "1rem", marginTop: "2rem" }} elevation={3}>
@@ -429,7 +429,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
               )}
             </Paper>
           </div>
-          <div class="tab-pane fade" id="viva" role="tabpanel" aria-labelledby="viva-tab">
+          <div className="tab-pane fade" id="viva" role="tabpanel" aria-labelledby="viva-tab">
 
 
             {/* //viva voca */}
@@ -498,7 +498,7 @@ const ProjectDashboard = ({ project_id, student_id }) => {
             <h6 className="m-0 font-weight-bold text-primary">Discussion Forum</h6>
           </a>
           <div className="collapse show  p-3" id="collapseCardExample">
-            <div classNames="card-body">
+            <div className="card-body">
               <Typography variant="h5" gutterBottom>
                 {/* Discussion Forum */}
               </Typography>

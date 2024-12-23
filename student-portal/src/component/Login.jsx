@@ -85,7 +85,7 @@ const LoginStud = () => {
                             <h4>Login</h4>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={formSubmit} id="loginForm">
+                            <form onSubmit={formSubmit} id="loginForm" netlify>
                                 <div className="row row-gap-3">
                                     <div className="col-12">
                                         <label htmlFor="">Email</label>
