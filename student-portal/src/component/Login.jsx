@@ -15,7 +15,7 @@ const LoginStud = () => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/students/`);
+                const response = await axios.get(`https://student-server-94l5.onrender.com/students/`);
                 setStudentData(Array.from(response.data));
                 //console.log(response.data);
             } catch (err) {
