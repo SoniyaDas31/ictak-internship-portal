@@ -21,6 +21,7 @@
     "react": "^19.0.0",
     "react-doc-viewer": "^0.1.14",
     "react-dom": "^19.0.0",
+    "react-is": "^19.0.0",
     "react-router-dom": "^7.0.1",
     "vite": "^6.0.5"
   },
