@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
 const router = express.Router();
 const studentModel = require('../models/studentModel');
 const markModel = require('../models/studentMark')
@@ -38,13 +37,7 @@ router.post('/', async (req, res) => {
     const alreadyRegistered = await studentModel.findOne({ email: email })
     if (alreadyRegistered) {
       return res.status(200).json({ message: "This email is already registered" })
-    }
-    const saltRounds = 10;
-    bcrypt.hash(req.body.password, saltRounds, async (err, hash) => {
-      if (err) {
-        console.log('error while hashing', err)
-        return res.status(500).json({ error: 'Internal server error' })
-      }
+    }else{
       var studentItem = {
         name: req.body.name,
         email: req.body.email,
@@ -55,7 +48,7 @@ router.post('/', async (req, res) => {
       var student = new studentModel(studentItem)
       await student.save()
       return res.status(201).json(student)
-    })
+    }
 
   } catch (error) {
     console.log(error);
