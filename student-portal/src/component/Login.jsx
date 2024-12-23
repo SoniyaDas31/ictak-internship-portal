@@ -107,11 +107,11 @@ const LoginStud = () => {
                                 </div>
                                 <div className='row mt-4'>
                                     {loginError ? (
-                                        <div className="alert alert-danger col-8 ml-4" role="alert">
+                                        <div className="alert alert-danger col-8 ml-2" role="alert">
                                             {loginComments}
                                         </div>
                                     ) : (
-                                        <div className="alert alert-primary col-8 ml-4" role="alert">
+                                        <div className="alert alert-primary col-8 ml-2" role="alert">
                                             {loginComments?(
                                                 <span>{loginComments}</span>
                                             ):(

@@ -102,7 +102,7 @@ const StudentDashboard = ({ student_id }) => {
             try {
                 const response = await axios.get(`http://localhost:3000/project/${projectidlocal}`);
                 setSelectedProject(response.data);
-                //console.log('ProjectID local in API', projectidlocal);
+                console.log('ProjectID local in API', projectidlocal);
                 //console.log('Selected Project is :',response.data);
                 //console.log('Selected Project Data :', selectedProject);
                 //console.log('Is enrolled ? :', enrolled);
