@@ -69,11 +69,6 @@ router.post('/', async (req, res) => {
       return res.status(200).json({ message: "This email is already registered" })
     }
     
-   
-      if (err) {
-        console.log('error while hashing', err)
-        return res.status(500).json({ error: 'Internal server error' })
-      }
       var studentItem = {
         name: req.body.name,
         email: req.body.email,
