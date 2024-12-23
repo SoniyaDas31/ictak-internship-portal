@@ -18,7 +18,8 @@ const discussionRoutes = require('./routers/discussionRoutes');
 // app.use(express.json())
 app.use(cors());
 app.use(express.json());
-app.use('/', signupRouter);
+app.use(express.urlencoded({ extended: true }));
+app.use('/signup', signupRouter);
 app.use('/project', projectRouter);
 app.use('/students', studentRouter);
 app.use('/uploads', express.static('uploads'));

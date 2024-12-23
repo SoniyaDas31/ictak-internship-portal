@@ -1,13 +1,87 @@
-import { Box, Button, Grid, TextField, Typography, Link } from '@mui/material';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Navbar2 from './Navbar-logout';
+import { Box, Button, Grid, TextField, Typography, Link } from '@mui/material';
+import axios from 'axios';
 
 const Signup = () => {
 
+  const [signupError, setSignupError] = useState(false);
+  const [signupComments, setSignupComments] = useState("");
+  const [studentData, setStudentData] = useState([]);
+  const [error, setError] = useState('');
   
 
-  const formSubmit = (e) => {
+  // fetching from mongo db student data using id
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/students/`);
+        setStudentData(Array.from(response.data));
+        console.log(response.data);
+      } catch (err) {
+        console.error("Error fetching project details:", err);
+        setError("Failed to fetch project details.");
+      }
+    };
+    fetchStudentData();
+  }, []);
 
+  const formSubmit = async (e) => {
+    e.preventDefault();
+    console.log(studentData);
+    let form_email = e.target.elements.email.value;
+    let form_password = e.target.elements.password.value;
+    console.log(form_email);
+    console.log(form_password);
+    const emailValidation = studentData.find((user) => user.email === form_email);
+    console.log(emailValidation);
+
+    if (!emailValidation) {
+      console.log("Student Not Registered");
+
+      // Capturing html form data to an objec
+      const formData = new FormData();
+      formData.append("name", e.target.elements.name.value);
+      formData.append("email", e.target.elements.email.value);
+      formData.append("password", e.target.elements.password.value);
+      formData.append("phonenumber", e.target.elements.phone.value);
+      console.log(formData);
+      for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+      }
+
+      // Api Call to push data to signup student
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/signup',
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log(response.data.message || "Student Registered successfully");
+        setSignupComments(response.data.message);
+
+      } catch (error) {
+        if (error.response) {
+          setError(error.response.data.error || 'An error occurred during submission.');
+          console.log(error.response.data.error);
+        } else {
+          setError('Unable to connect to the server.');
+          setSignupComments("Unable to connect to the server.");
+          setSignupError(true);
+        }
+
+      }
+
+
+    } else {
+      console.log("Student Already Registered, Please Login");
+      setSignupComments("Already Registered, Please Login!");
+    }
   }
 
   return (
@@ -37,7 +111,7 @@ const Signup = () => {
                     </div>
                     <div className="col-12">
                       <label htmlFor="">Phone</label>
-                      <input id="name" name="stdPhone" type="text" placeholder="Phone Number" className="form-control form-control-user" required />
+                      <input id="phone" name="stdPhone" type="text" placeholder="Phone Number" className="form-control form-control-user" required />
                     </div>
 
                   </div>
@@ -45,19 +119,24 @@ const Signup = () => {
                     <div className="col-12 mt-4 d-flex justify-content-start">
                       <button className="btn btn-primary" type="submit">Register</button>
                     </div>
-                    
-                  </div>
-                  <div className='row mt-3'>
-                  <a href={'/login'} style={{ color: 'darkblue' }}>Registered user? Please click here</a>
+
                   </div>
                   <div className='row mt-4'>
-                   
-                      <div className="alert alert-primary col-8 ml-4" role="alert">
-                          <span> Please fill the form with details to register</span>
-                      </div>
+
+                    <div className="alert alert-primary col-8 ml-2" role="alert">
+                      {signupComments ? (
+                        <span>{signupComments}</span>
+                      ) : (
+                        <span> Please fill the form with details to register</span>
+                      )}
+                    </div>
 
 
                   </div>
+                  <div className='row mt-3'>
+                    <a href={'/login'} style={{ color: 'darkblue' }}>Registered user? Please click here</a>
+                  </div>
+
                 </form>
               </div>
             </div>

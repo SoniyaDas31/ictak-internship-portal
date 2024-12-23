@@ -35,7 +35,7 @@ const LoginStud = () => {
 
     const formSubmit = (e) => {
         e.preventDefault();
-        console.log(studentData);
+        //console.log(studentData);
         let form_email = e.target.elements.email.value;
         let form_password = e.target.elements.password.value;
         //console.log(form_email);
