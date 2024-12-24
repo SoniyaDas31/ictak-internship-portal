@@ -1,18 +1,30 @@
-body{margin: 0; padding: 0; background: #f3fff3;}
+body {
+  margin: 0;
+  padding: 0;
+  background: #f3fff3;
+}
 
 /* Hero Section */
+
+.hero {
+  padding: 3em 2em;
+}
+
 .hero-title {
-  font-size: 3rem;
-  color: rgb(39, 7, 7);
+  font-size: 2.8rem;
+  color: #3F51B5;
   text-align: center;
   margin: 0;
+  font-weight: 700;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
-  color: rgb(14, 158, 52);
+  font-size: 1.3rem;
+  color: #0e9e34;
   text-align: center;
   margin: 10px 0;
+  padding: 1em;
+  font-weight: 500;
 }
 
 .hero-button {
@@ -96,7 +108,7 @@ body{margin: 0; padding: 0; background: #f3fff3;}
   background-color: #218838;
 }
 
-.navbar-expand-lg .navbar-collapse{
+.navbar-expand-lg .navbar-collapse {
   justify-content: space-between;
 }
 
@@ -136,16 +148,17 @@ body{margin: 0; padding: 0; background: #f3fff3;}
   font-size: 1rem;
   color: #555;
 }
-.h3{
+
+.h3 {
   align-items: center;
 }
 
-.modal.open{
+.modal.open {
   display: block !important;
   background: rgba(0, 0, 0, 0.5);
 }
 
-.modal .close{
+.modal .close {
   position: absolute;
   right: 20px;
 }
